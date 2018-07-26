@@ -21,11 +21,11 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>USplash_AuthController</apexClass>
+        <apexClass>UnSplash_AuthController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>USplash_Helper</apexClass>
+        <apexClass>UnSplash_Helper</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -51,7 +51,7 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>USplash_Auth</apexPage>
+        <apexPage>UnSplash_Auth</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <userLicense>Salesforce</userLicense>
