@@ -35,10 +35,18 @@ public with sharing class UnSplash_Helper
             Map<string, object> urls = (Map<string, object>)mapItem.get('urls');
             
             string raw = (string)urls.get('raw');
+            string small = (string)urls.get('small');
+            
+            Map<string, object> userSec = (Map<string, object>)mapItem.get('user');
+			string name = (string)userSec.get('name');
+            string portfolio_url = (string)userSec.get('portfolio_url');
             
 			ImageWrapper item = new ImageWrapper();
             item.Description = description;
-            item.Url = raw;
+            item.Url = small;
+            item.RawUrl = raw;
+            item.Photographer = name;
+            item.PhotographerSocial = portfolio_url;
             item.Selected = false;
             
             items.add(item);

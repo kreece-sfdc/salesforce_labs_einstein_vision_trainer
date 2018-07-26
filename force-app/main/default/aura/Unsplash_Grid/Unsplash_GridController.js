@@ -7,5 +7,8 @@
 	},
     select : function(component, event, helper) {
 		helper.select(component, event, helper);		
+	},
+    refresh : function(component, event, helper) {
+		helper.refresh(component, event, helper);		
 	}
 })
