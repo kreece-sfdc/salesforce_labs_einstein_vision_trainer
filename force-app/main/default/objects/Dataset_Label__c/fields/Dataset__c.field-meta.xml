@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Dataset__c</fullName>
+    <externalId>false</externalId>
+    <label>Dataset</label>
+    <referenceTo>Dataset__c</referenceTo>
+    <relationshipLabel>Dataset Labels</relationshipLabel>
+    <relationshipName>Dataset_Labels</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>
