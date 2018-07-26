@@ -2,14 +2,13 @@ public class AuthCallBack implements Metadata.DeployCallback
 {
     public void handleResult(Metadata.DeployResult result, Metadata.DeployCallbackContext context) 
     {
-        
         if (result.status == Metadata.DeployStatus.Succeeded) 
         {
-            //BotDataHelper.PublishEvent(BotDataConstants.Type_Fitbit, BotDataConstants.Message_Deploy_Successful);
+            EventHelper.PublishAuthEvent(Constants.Unsplash, Constants.Auth_Deploy_Success);
         } 
         else 
         {
-            //BotDataHelper.PublishEvent(BotDataConstants.Type_Fitbit, BotDataConstants.Message_Deploy_Failed);
+            EventHelper.PublishAuthEvent(Constants.Unsplash, Constants.Auth_Deploy_Failure);
         }
     }
 }
