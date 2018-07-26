@@ -1,0 +1,49 @@
+public with sharing class UnSplash_Helper 
+{
+	public static Map<string, object> QueryPhotos(string access_token, string query, integer page)
+    {
+        HttpRequest req = new HttpRequest();
+        req.setMethod('GET');
+        req.setEndpoint('https://api.unsplash.com/search/photos?page=' + page + '&per_page=10&query=' + query);
+        req.setHeader('Authorization', 'Bearer ' + access_token);
+
+        Http api = new Http();
+        HttpResponse res = api.send(req);
+        
+        Map<string, object> ret = new Map<string, object>();
+        
+        if(res.getStatusCode() == 200)
+        {
+        	ret = (Map<string, object>)JSON.deserializeUntyped(res.getBody()); 
+        }
+        
+        return ret;
+    }
+    
+    public static List<ImageWrapper> GetImages(Map<string, object> queryResults)
+    {
+        List<ImageWrapper> items = new List<ImageWrapper>();
+        
+        List<object> results = (List<object>)queryResults.get('results');
+        
+        for(object obj : results)
+        {
+            Map<string, object> mapItem = (Map<string, object>)obj;
+        
+            string description = (string)mapItem.get('description');
+            
+            Map<string, object> urls = (Map<string, object>)mapItem.get('urls');
+            
+            string raw = (string)urls.get('raw');
+            
+			ImageWrapper item = new ImageWrapper();
+            item.Description = description;
+            item.Url = raw;
+            item.Selected = false;
+            
+            items.add(item);
+        }
+        
+        return items;
+	}
+}

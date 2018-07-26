@@ -1,0 +1,38 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="Unsplash_GridController">
+    
+    <aura:attribute name="items" type="ImageWrapper[]" />
+    <aura:attribute name="query" type="string" />
+    <aura:attribute name="hasAuth" type="boolean" default="false" />
+    <aura:attribute name="authUrl" type="string" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+  
+    <aura:if isTrue="{!v.hasAuth==true}">
+        <lightning:card title="Search" class="slds-m-bottom_small">
+            
+                <lightning:input name="query" label="Query" placeholder="type here..." value="{!v.query}" />
+                <lightning:button label="Search" onclick="{!c.search}"/>
+    
+            <div class="slds-grid slds-wrap">
+                <aura:iteration items="{!v.items}" var="item" indexVar="index">
+                    <div class="slds-col slds-size_1-of-3">
+                        <ui:inputCheckbox aura:id="checkbox" label="" value="{!item.Selected}" />
+                        <img src="{!item.Url}" />
+                    </div>
+                </aura:iteration>
+            </div>
+            
+            <lightning:button label="Select" onclick="{!c.select}"/>
+            
+        </lightning:card>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.hasAuth==false}">
+        <lightning:card title="Search" class="slds-m-bottom_small">
+            
+            <h2><a href="{!v.authUrl}" target="_blank">Please autenticate to Unsplash to Continue</a></h2>
+                          
+        </lightning:card>
+    </aura:if>
+    
+    
+</aura:component>
