@@ -58,12 +58,37 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Dataset_Image__c.Raw_Image__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Dataset_Image__c.Small_Image__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Dataset_Label__c.Dataset_Label_Id__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Dataset__c.Dataset_Id__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Image_Classification_Result__c.Label__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Image_Classification_Result__c.Result__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Image_Classification__c.Url__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <layoutAssignments>
@@ -77,6 +102,12 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Dataset__c-Data Set Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Image_Classification_Result__c-Image Classification Result Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Image_Classification__c-Image Classification Layout</layout>
     </layoutAssignments>
     <pageAccesses>
         <apexPage>Pinterest_Auth</apexPage>

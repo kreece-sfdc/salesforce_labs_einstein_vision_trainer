@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Image_Classification__c</fullName>
+    <externalId>false</externalId>
+    <label>Image Classification</label>
+    <referenceTo>Image_Classification__c</referenceTo>
+    <relationshipLabel>Image Classification Results</relationshipLabel>
+    <relationshipName>Image_Classification_Results</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

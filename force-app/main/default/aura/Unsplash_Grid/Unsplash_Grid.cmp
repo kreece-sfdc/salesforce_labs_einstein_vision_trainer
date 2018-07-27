@@ -9,9 +9,9 @@
     <aura:if isTrue="{!v.hasAuth==true}">
         <lightning:card title="Search" class="slds-m-bottom_small">
             
-                <lightning:input name="query" label="Query" placeholder="type here..." value="{!v.query}" />
-                <lightning:button label="Search" onclick="{!c.search}"/>
-    
+            <lightning:input name="query" label="Query" placeholder="type here..." value="{!v.query}" />
+            <lightning:button label="Search" onclick="{!c.search}"/>
+            
             <div class="slds-grid slds-wrap">
                 <aura:iteration items="{!v.items}" var="item" indexVar="index">
                     <div class="slds-col slds-size_1-of-3">
