@@ -11,20 +11,16 @@
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Dataset_Image_Id__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Required</behavior>
-                <field>Dataset_Label__c</field>
+                <field>Image_Classification__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Small_Image__c</field>
+                <field>Label__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Raw_Image__c</field>
+                <field>Result__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns/>
