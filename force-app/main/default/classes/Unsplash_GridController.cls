@@ -1,9 +1,9 @@
 public with sharing class Unsplash_GridController 
-{
+{ 
 	@AuraEnabled
     public static List<ImageWrapper> SearchUnsplash(string query)
     {
-        Map<string, object> results = Unsplash_Helper.QueryPhotos(AuthHelper.GetAccessToken(Constants.Unsplash), query, 1);
+        Map<string, object> results = Unsplash_Helper.QueryPhotos(AuthHelper.ReadAccessToken(Constants.Unsplash), query, 1);
         
         return Unsplash_Helper.GetImages(results);
     }
