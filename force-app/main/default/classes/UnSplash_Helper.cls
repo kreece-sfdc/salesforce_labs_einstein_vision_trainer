@@ -25,6 +25,7 @@ public with sharing class UnSplash_Helper
         List<ImageWrapper> items = new List<ImageWrapper>();
         
         List<object> results = (List<object>)queryResults.get('results');
+        Integer imgId = 0;
         
         for(object obj : results)
         {
@@ -42,6 +43,7 @@ public with sharing class UnSplash_Helper
             string portfolio_url = (string)userSec.get('portfolio_url');
             
 			ImageWrapper item = new ImageWrapper();
+            item.imgId = imgId++;
             item.Description = description;
             item.Url = small;
             item.RawUrl = raw;

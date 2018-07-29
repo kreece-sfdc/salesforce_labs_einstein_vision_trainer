@@ -10,5 +10,10 @@
 	},
     refresh : function(component, event, helper) {
 		helper.refresh(component, event, helper);		
-	}
+	},
+		keyCheck : function(component, event, helper){
+    if (event.which == 13){
+        helper.search(component, event, helper);
+    }    
+}
 })
