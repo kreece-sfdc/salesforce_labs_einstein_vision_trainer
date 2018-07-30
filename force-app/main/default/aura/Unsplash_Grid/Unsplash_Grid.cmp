@@ -4,23 +4,44 @@
     <aura:attribute name="query" type="string" />
     <aura:attribute name="hasAuth" type="boolean" default="false" />
     <aura:attribute name="authUrl" type="string" />
+    <aura:attribute name="pickerId" type="integer" />
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
   
     <aura:if isTrue="{!v.hasAuth==true}">
-        <lightning:card title="Search" class="slds-m-bottom_small">
-            
-            <lightning:input name="query" label="Query" placeholder="type here..." value="{!v.query}" />
-            <lightning:button label="Search" onclick="{!c.search}"/>
-            
-            <div class="slds-grid slds-wrap">
-                <aura:iteration items="{!v.items}" var="item" indexVar="index">
-                    <div class="slds-col slds-size_1-of-3">
-                        <ui:inputCheckbox aura:id="checkbox" label="" value="{!item.Selected}" />
-                        <img src="{!item.Url}" />
-                    </div>
-                </aura:iteration>
+        <lightning:card title="Search">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_2-of-3">
+                    <span onkeypress="{!c.keyCheck}">
+                        <lightning:input name="query" placeholder="Search and Pick your image" value="{!v.query}"/>
+                    </span>
+                </div>
+                <div class="slds-col slds-size_1-of-3" style="vertical-align: bottom">
+                    <lightning:button label="Search" onclick="{!c.search}"/>
+                </div>
             </div>
-            
+            <fieldset class="slds-form-element" >
+                <div class="slds-form-element__control">
+                    <aura:iteration items="{!v.items}" var="item" indexVar="index">
+                        <div class="slds-visual-picker slds-visual-picker_medium">
+                            <input type="checkbox" id="{!item.imgId}" value="{!item.Selected}" name="options" />
+                            <label for="{!item.imgId}">
+                            <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center"> 
+                                <span class="slds-is-selected">
+                                <span class="slds-icon_container">
+                                    <img src="{!$Resource.Selected}" />
+                                </span>
+                                </span>
+                                <span class="slds-is-not-selected">
+                                <span class="slds-icon_container" style="max-height: 120px">
+                                    <img src="{!item.Url}" style="max-height: 120px"/>
+                                </span>
+                                </span>
+                            </span>
+                           </label>
+                        </div>
+                    </aura:iteration>
+                </div>
+              </fieldset>
             <lightning:button label="Select" onclick="{!c.select}"/>
             
         </lightning:card>
@@ -28,11 +49,8 @@
     
     <aura:if isTrue="{!v.hasAuth==false}">
         <lightning:card title="Search" class="slds-m-bottom_small">
-            
-            <h2><a href="{!v.authUrl}" target="_blank">Please autenticate to Unsplash to Continue</a></h2>
-            
-            <a href="javascript:void(0)" onclick="{!c.refresh}">Refresh</a>
-                          
+            <h2><a href="{!v.authUrl}" target="_blank">Please autenticate to Unsplash to Continue</a></h2>  
+            <a href="javascript:void(0)" onclick="{!c.refresh}">Refresh</a>               
         </lightning:card>
     </aura:if>
     
