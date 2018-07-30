@@ -25,6 +25,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>HttpHelper</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ImageWrapper</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -58,6 +62,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>VisionExamples</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>VisionHelper</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>VisionPredictHelper</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <custom>false</custom>
@@ -107,9 +119,9 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Image_Classification__c.Url__c</field>
-        <readable>false</readable>
+        <editable>true</editable>
+        <field>Image_Classification__c.Status__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <layoutAssignments>
         <layout>Auth_Storage__mdt-Auth Storage Layout</layout>
@@ -136,6 +148,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Auth_Event__e</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Classification_Event__e</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -200,13 +221,6 @@
         <apexPage>UnSplash_Auth</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
-    <profileActionOverrides>
-        <actionName>Tab</actionName>
-        <content>Home_Page_Default2</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>standard-home</pageOrSobjectType>
-        <type>Flexipage</type>
-    </profileActionOverrides>
     <userLicense>Salesforce</userLicense>
     <userPermissions>
         <enabled>true</enabled>

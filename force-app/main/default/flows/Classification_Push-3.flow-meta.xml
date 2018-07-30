@@ -10,7 +10,7 @@
         <inputParameters>
             <name>emailSubject</name>
             <value>
-                <stringValue>Salesforce Test process didn&#39;t start: No matching records found</stringValue>
+                <stringValue>Salesforce Classification Push process didn&#39;t start: No matching records found</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -36,7 +36,7 @@
         <inputParameters>
             <name>emailSubject</name>
             <value>
-                <stringValue>Salesforce Test process didn&#39;t start: Multiple matching records found</stringValue>
+                <stringValue>Salesforce Classification Push process didn&#39;t start: Multiple matching records found</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -49,6 +49,62 @@
             <name>emailAddresses</name>
             <value>
                 <stringValue>kreece@salesforce.com</stringValue>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <processMetadataValues>
+            <name>apexSelection</name>
+            <value>
+                <stringValue>Submit Image for Classification to Einstein Vision</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_1_A1</name>
+        <label>Submit for Classification</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <actionName>VisionPredictHelper</actionName>
+        <actionType>apex</actionType>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>itemIds</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue/>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Reference</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>itemIds</name>
+            <value>
+                <elementReference>myVariable_event_context.Id</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
@@ -129,29 +185,119 @@
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_1</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
-                <leftValueReference>formula_myRule_1</leftValueReference>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>inputSourceType</name>
+                    <value>
+                        <stringValue>customEvent</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_myEvent.Action__c</leftValueReference>
                 <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Created</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_event_context.Status__c</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
-            <label>Always</label>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_event_context.Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Created</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>Just Created</label>
         </rules>
     </decisions>
-    <formulas>
-        <name>formula_myRule_1</name>
-        <dataType>Boolean</dataType>
-        <expression>true</expression>
-    </formulas>
     <formulas>
         <name>OrganizationName</name>
         <dataType>String</dataType>
         <expression>{!$Organization.Name}</expression>
     </formulas>
-    <interviewLabel>Test-1_InterviewLabel</interviewLabel>
-    <label>Test</label>
+    <interviewLabel>Classification_Push-3_InterviewLabel</interviewLabel>
+    <label>Classification Push</label>
     <loops>
         <name>eventContextCheckLoop</name>
         <label>ContextCheckLoop</label>
@@ -170,13 +316,13 @@
     <processMetadataValues>
         <name>EventType</name>
         <value>
-            <stringValue>Dataset_Event__e</stringValue>
+            <stringValue>Classification_Event__e</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
         <name>ObjectType</name>
         <value>
-            <stringValue>Dataset__c</stringValue>
+            <stringValue>Image_Classification__c</stringValue>
         </value>
     </processMetadataValues>
     <processType>CustomEvent</processType>
@@ -199,13 +345,13 @@
             <processMetadataValues>
                 <name>inputDataType</name>
                 <value>
-                    <stringValue>String</stringValue>
+                    <stringValue>ID</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
                 <name>leftHandSideLabel</name>
                 <value>
-                    <stringValue>Dataset Id</stringValue>
+                    <stringValue>Record ID</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -217,7 +363,7 @@
             <processMetadataValues>
                 <name>leftHandSideType</name>
                 <value>
-                    <stringValue>String</stringValue>
+                    <stringValue>ID</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -232,14 +378,16 @@
                     <stringValue>Event</stringValue>
                 </value>
             </processMetadataValues>
-            <field>Dataset_Id__c</field>
+            <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>myVariable_myEvent.Dataset_Id__c</elementReference>
+                <elementReference>myVariable_myEvent.Classification_Id__c</elementReference>
             </value>
         </filters>
-        <object>Dataset__c</object>
+        <object>Image_Classification__c</object>
         <outputReference>myVariable_event_context_collection</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Status__c</queriedFields>
     </recordLookups>
     <startElementReference>myEventContextRecordLookup</startElementReference>
     <textTemplates>
@@ -247,10 +395,10 @@
         <name>multipleRecordsFoundTextTemplate</name>
         <text>Hello {!OrganizationName} Admin, 
 
-The Test process is configured to start when a Dataset Event platform event message occurs. A Dataset Event message occurred, but the process didn&#39;t start because multiple records in your org match the values specified in the process&#39;s Object node.
+The Classification Push process is configured to start when a Classification Event platform event message occurs. A Classification Event message occurred, but the process didn&#39;t start because multiple records in your org match the values specified in the process&#39;s Object node.
 
-Here are the values from the Dataset Event message.
-Dataset Id: {!myVariable_myEvent.Dataset_Id__c}
+Here are the values from the Classification Event message.
+Classification Id: {!myVariable_myEvent.Classification_Id__c}
 
 To fix this issue, adjust the matching filters in the process&#39;s Object node.
 
@@ -262,10 +410,10 @@ Salesforce Process Automation</text>
         <name>noRecordsFoundTextTemplate</name>
         <text>Hello {!OrganizationName} Admin, 
 
-The Test process is configured to start when a Dataset Event platform event message occurs. A Dataset Event message occurred, but the process didn&#39;t start because no records in your org match the values specified in the process&#39;s Object node.
+The Classification Push process is configured to start when a Classification Event platform event message occurs. A Classification Event message occurred, but the process didn&#39;t start because no records in your org match the values specified in the process&#39;s Object node.
 
-Here are the values from the Dataset Event message.
-Dataset Id: {!myVariable_myEvent.Dataset_Id__c}
+Here are the values from the Classification Event message.
+Classification Id: {!myVariable_myEvent.Classification_Id__c}
 
 To fix this issue, adjust the matching filters in the process&#39;s Object node.
 
@@ -278,7 +426,7 @@ Salesforce Process Automation</text>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
-        <objectType>Dataset__c</objectType>
+        <objectType>Image_Classification__c</objectType>
     </variables>
     <variables>
         <name>myVariable_event_context_collection</name>
@@ -286,7 +434,7 @@ Salesforce Process Automation</text>
         <isCollection>true</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
-        <objectType>Dataset__c</objectType>
+        <objectType>Image_Classification__c</objectType>
     </variables>
     <variables>
         <name>myVariable_event_current_record</name>
@@ -294,7 +442,7 @@ Salesforce Process Automation</text>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
-        <objectType>Dataset__c</objectType>
+        <objectType>Image_Classification__c</objectType>
     </variables>
     <variables>
         <name>myVariable_event_record_count</name>
@@ -313,6 +461,6 @@ Salesforce Process Automation</text>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
-        <objectType>Dataset_Event__e</objectType>
+        <objectType>Classification_Event__e</objectType>
     </variables>
 </Flow>
