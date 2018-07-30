@@ -6,7 +6,7 @@ public with sharing class VisionExamples
         string access_token = AuthHelper.GetVisionAccessToken();
         
         // Make a prediction using URL to a file
-        return Vision.predictUrl('https://einstein.ai/images/generalimage.jpg',access_token,'GeneralImageClassifier');
+        return Vision.predictUrl('https://img.gta5-mods.com/q95/images/ferrari-430-scuderia-add-on-replace-tuning-template/27acec-GTA5%2023-11-2016%2020-48-06-473.jpg',access_token,'GeneralImageClassifier');
     }
 
     public static List<Vision.Prediction> CallVisionContent() 
