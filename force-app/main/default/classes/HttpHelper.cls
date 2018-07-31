@@ -6,12 +6,15 @@ public with sharing class HttpHelper
         req.setMethod(method);
         req.setEndpoint(url);
         
-        for(string header : headers.keySet())
+        if(headers != null)
         {
-	        req.setHeader(header, headers.get(header));            
+            for(string header : headers.keySet())
+            {
+                req.setHeader(header, headers.get(header));            
+            }
         }
         
-        if(!string.isEmpty(body))
+        if(body != null && !string.isEmpty(body))
         {
             req.setBodyAsBlob(blob.valueOf(body));
         }

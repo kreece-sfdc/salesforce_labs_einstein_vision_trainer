@@ -15,16 +15,16 @@
                 <field>Dataset_Image_Id__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Dataset_Label__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Small_Image__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Raw_Image__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>Dataset__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns/>
