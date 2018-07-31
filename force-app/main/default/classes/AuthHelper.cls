@@ -39,29 +39,15 @@ public with sharing class AuthHelper
     
     public static string GetVisionAccessToken()
     {
-        if(!HasAccessToken(Constants.Einstein_Vision))
-        {
-            ContentVersion base64Content = [SELECT Title, VersionData, CreatedBy.Email FROM ContentVersion where Title='einstein_platform' OR  Title='predictive_services' ORDER BY Title LIMIT 1];
-            String keyContents = base64Content.VersionData.tostring();
-            keyContents = keyContents.replace('-----BEGIN RSA PRIVATE KEY-----', '');
-            keyContents = keyContents.replace('-----END RSA PRIVATE KEY-----', '');
-            keyContents = keyContents.replace('\n', '');
-    
-            EinsteinAI_JWT jwt = new EinsteinAI_JWT('RS256');
-            jwt.pkcs8 = keyContents;
-            jwt.iss = 'developer.force.com';
-            system.debug(base64content.CreatedBy.Email);
-            jwt.sub = base64content.CreatedBy.Email;
-            jwt.aud = 'https://api.einstein.ai/v2/oauth2/token';
-            jwt.exp = '3628800';
-            string access_token = EinsteinAI_JWTBearerFlow.getAccessToken('https://api.einstein.ai/v2/oauth2/token', jwt);
-            
-            //WriteAccessToken(Constants.Einstein_Vision, access_token, null);
-            
-            return access_token;
-        }
+        List<Auth_Storage__mdt> auths = [SELECT Access__c FROM Auth_Storage__mdt WHERE MasterLabel =: Constants.Einstein_Vision];
         
-        return ReadAccessToken(Constants.Einstein_Vision);
+        if(!auths.isEmpty())
+        {
+            Auth_Storage__mdt auth = auths.get(0);
+            return auth.Access__c;
+        }
+
+        return null;
     }
     
     public static void GetAccessToken(string url, string client_id, string client_secret, string callback_url, string code, string storage)
