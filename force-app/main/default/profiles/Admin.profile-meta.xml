@@ -17,6 +17,18 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>EinsteinAI_JWT</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>EinsteinAI_JWTBearerFlow</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>EinsteinVision_PredictionService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>EventHelper</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -30,14 +42,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ImageWrapper</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>JWT</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>JWTBearerFlow</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>

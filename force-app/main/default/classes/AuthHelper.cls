@@ -47,14 +47,14 @@ public with sharing class AuthHelper
             keyContents = keyContents.replace('-----END RSA PRIVATE KEY-----', '');
             keyContents = keyContents.replace('\n', '');
     
-            JWT jwt = new JWT('RS256');
-            // jwt.cert = 'JWTCert'; // Uncomment this if you used a Salesforce certificate to sign up for an Einstein Platform account
-            jwt.pkcs8 = keyContents; // Comment this if you are using jwt.cert
+            EinsteinAI_JWT jwt = new EinsteinAI_JWT('RS256');
+            jwt.pkcs8 = keyContents;
             jwt.iss = 'developer.force.com';
+            system.debug(base64content.CreatedBy.Email);
             jwt.sub = base64content.CreatedBy.Email;
             jwt.aud = 'https://api.einstein.ai/v2/oauth2/token';
             jwt.exp = '3628800';
-            string access_token = JWTBearerFlow.getAccessToken('https://api.einstein.ai/v2/oauth2/token', jwt);
+            string access_token = EinsteinAI_JWTBearerFlow.getAccessToken('https://api.einstein.ai/v2/oauth2/token', jwt);
             
             //WriteAccessToken(Constants.Einstein_Vision, access_token, null);
             
