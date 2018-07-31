@@ -1,7 +1,7 @@
 public class ImageWrapper 
 {
     @AuraEnabled
-    public Integer imgId { get; set; }
+    public Integer ImgId { get; set; }
     @AuraEnabled
     public string Description { get; set; }
     @AuraEnabled

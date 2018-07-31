@@ -1,18 +1,23 @@
-<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="Unsplash_GridController">
+<aura:component controller="Unsplash_GridController" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global">
     
+    <ltng:require scripts="{!$Resource.cometd}" afterScriptsLoaded="{!c.onCometdLoaded}"/>
+    <aura:attribute name="sessionId" type="String"/>
+    <aura:attribute name="cometd" type="Object"/>
+    <aura:attribute name="cometdSubscriptions" type="Object[]"/>
     <aura:attribute name="items" type="ImageWrapper[]" />
     <aura:attribute name="query" type="string" />
     <aura:attribute name="hasAuth" type="boolean" default="false" />
     <aura:attribute name="authUrl" type="string" />
-    <aura:attribute name="pickerId" type="integer" />
+    <aura:attribute name="page_number" type="integer" default="1" />
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+   <!-- <aura:registerEvent name="toastEvent" type="force:showToast"/> -->
   
     <aura:if isTrue="{!v.hasAuth==true}">
         <lightning:card title="Search">
             <div class="slds-grid slds-gutters">
                 <div class="slds-col slds-size_2-of-3">
                     <span onkeypress="{!c.keyCheck}">
-                        <lightning:input name="query" placeholder="Search and Pick your image" value="{!v.query}"/>
+                        <lightning:input label="test" name="query" placeholder="Search and Pick your image" value="{!v.query}"/>
                     </span>
                 </div>
                 <div class="slds-col slds-size_1-of-3" style="vertical-align: bottom">
@@ -23,8 +28,8 @@
                 <div class="slds-form-element__control">
                     <aura:iteration items="{!v.items}" var="item" indexVar="index">
                         <div class="slds-visual-picker slds-visual-picker_medium">
-                            <input type="checkbox" id="{!item.imgId}" value="{!item.Selected}" name="options" />
-                            <label for="{!item.imgId}">
+                            <input type="checkbox" id="{!item.ImgId}" value="{!item.Selected}" name="options" />
+                            <label for="{!item.ImgId}">
                             <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center"> 
                                 <span class="slds-is-selected">
                                 <span class="slds-icon_container">
@@ -43,6 +48,7 @@
                 </div>
               </fieldset>
             <lightning:button label="Select" onclick="{!c.select}"/>
+            <lightning:button label="Load More" onclick="{!c.loadmore}"/>
             
         </lightning:card>
     </aura:if>

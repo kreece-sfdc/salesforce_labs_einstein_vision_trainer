@@ -221,6 +221,13 @@
         <apexPage>UnSplash_Auth</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
+    <profileActionOverrides>
+        <actionName>Tab</actionName>
+        <content>Home_Page_Default3</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+        <type>Flexipage</type>
+    </profileActionOverrides>
     <userLicense>Salesforce</userLicense>
     <userPermissions>
         <enabled>true</enabled>
