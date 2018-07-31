@@ -807,6 +807,8 @@ public class EinsteinVision_PredictionService {
         //ContentVersion base64Content = [SELECT Title, VersionData FROM ContentVersion where Title='einstein_platform' LIMIT 1];
         ContentVersion base64Content = [SELECT Title, VersionData, CreatedBy.Email FROM ContentVersion where Title='einstein_platform' OR  Title='predictive_services' ORDER BY Title LIMIT 1];
         String keyContents = base64Content.VersionData.tostring();
+        //string keyContents = AuthHelper.GetVisionAccessToken();
+        
         keyContents = keyContents.replace('-----BEGIN RSA PRIVATE KEY-----', '');
         keyContents = keyContents.replace('-----END RSA PRIVATE KEY-----', '');
         keyContents = keyContents.replace('\n', '');

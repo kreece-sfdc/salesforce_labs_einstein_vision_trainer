@@ -6,4 +6,6 @@ public class Constants
     
     public static final string Auth_Deploy_Success = 'Deploy_Success';
     public static final string Auth_Deploy_Failure = 'Deploy_Failure';
+    
+    public static final string Dataset_Create = 'Dataset_Created';
 }
