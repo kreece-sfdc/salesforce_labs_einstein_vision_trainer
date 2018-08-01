@@ -10,7 +10,6 @@
     <aura:attribute name="authUrl" type="string" />
     <aura:attribute name="page_number" type="integer" default="1" />
     <aura:handler name="init" value="{!this}" action="{!c.init}"/> 
-   <!-- <aura:registerEvent name="toastEvent" type="force:showToast"/> -->
   
     <aura:if isTrue="{!v.hasAuth==true}">
         <lightning:card title="Search">

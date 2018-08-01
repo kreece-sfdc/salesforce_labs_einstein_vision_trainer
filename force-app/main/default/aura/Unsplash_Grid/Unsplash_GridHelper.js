@@ -93,7 +93,6 @@
         action.setCallback(this, function(response) {
             var state = response.getState();
             if (state === "SUCCESS") {
-                alert("Success");
                 component.set('v.items', response.getReturnValue());
             }
             else if (state === "INCOMPLETE") {
