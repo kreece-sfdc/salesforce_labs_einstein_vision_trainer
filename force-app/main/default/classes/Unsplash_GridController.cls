@@ -1,7 +1,7 @@
 public with sharing class Unsplash_GridController 
 { 
 	@AuraEnabled
-    public static List<ImageWrapper> SearchUnsplash(string query, integer page_number)
+    public static List<ImageWrapper> SearchUnsplash(string query, decimal page_number)
     {
         if(page_number == null) 
         {
