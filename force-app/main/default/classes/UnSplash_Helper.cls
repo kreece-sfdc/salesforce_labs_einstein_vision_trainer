@@ -28,7 +28,7 @@ public with sharing class UnSplash_Helper
         
         List<object> results = (List<object>)queryResults.get('results');
 
-        Integer imgId = (pager-1)*10;
+        integer imgId = (pager-1)*10;
         
         for(object obj : results)
         {

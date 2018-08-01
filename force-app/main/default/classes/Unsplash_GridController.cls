@@ -4,10 +4,7 @@ public with sharing class Unsplash_GridController
     public static List<ImageWrapper> SearchUnsplash(string query, integer page_number)
     {
         if(page_number==null) 
-        {
-             System.debug('null');
               page_number =1;
-        }
         Map<string, object> results = Unsplash_Helper.QueryPhotos(AuthHelper.ReadAccessToken(Constants.Unsplash), query, page_number);
 
         
