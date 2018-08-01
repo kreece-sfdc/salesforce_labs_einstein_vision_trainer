@@ -134,7 +134,7 @@
             "sourcePath": "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/classes",
             "isDirectory": true,
             "size": 3200,
-            "modifiedTime": 1533136263443,
+            "modifiedTime": 1533137862509,
             "changeTime": 1533034934928,
             "contentHash": "4adc08cbafd5410e0e9b1234bf14901cf7a6303c",
             "isMetadataFile": false,
@@ -436,14 +436,14 @@
     [
         "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/classes/UnSplash_Helper.cls",
         {
-            "state": "u",
             "sourcePath": "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/classes/UnSplash_Helper.cls",
             "isDirectory": false,
-            "isMetadataFile": false,
             "size": 2076,
-            "modifiedTime": 1533137791193,
+            "modifiedTime": 1533137862509,
             "changeTime": 1533137791193,
-            "contentHash": "eca61edd7497bdb26f74c0b39e06d2aff77e049a"
+            "contentHash": "eca61edd7497bdb26f74c0b39e06d2aff77e049a",
+            "isMetadataFile": false,
+            "state": "u"
         }
     ],
     [
@@ -464,14 +464,14 @@
     [
         "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/classes/Unsplash_GridController.cls",
         {
-            "state": "u",
             "sourcePath": "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/classes/Unsplash_GridController.cls",
             "isDirectory": false,
-            "isMetadataFile": false,
             "size": 1185,
-            "modifiedTime": 1533137791189,
+            "modifiedTime": 1533137862509,
             "changeTime": 1533137791189,
-            "contentHash": "defee751ccec083e649d53200989003f93824455"
+            "contentHash": "defee751ccec083e649d53200989003f93824455",
+            "isMetadataFile": false,
+            "state": "u"
         }
     ],
     [
@@ -1738,51 +1738,6 @@
         }
     ],
     [
-        "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/profiles/Custom%3A Marketing Profile.profile-meta.xml",
-        {
-            "sourcePath": "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/profiles/Custom%3A Marketing Profile.profile-meta.xml",
-            "isDirectory": false,
-            "size": 9026,
-            "modifiedTime": 1532944381506,
-            "changeTime": 1532944381506,
-            "contentHash": "17dfcb0a4548daddb6a4357c6b99758f3cc35b14",
-            "isMetadataFile": true,
-            "state": "u",
-            "isWorkspace": false,
-            "isArtifactRoot": false
-        }
-    ],
-    [
-        "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/profiles/Custom%3A Sales Profile.profile-meta.xml",
-        {
-            "sourcePath": "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/profiles/Custom%3A Sales Profile.profile-meta.xml",
-            "isDirectory": false,
-            "size": 9026,
-            "modifiedTime": 1532944381506,
-            "changeTime": 1532944381506,
-            "contentHash": "17dfcb0a4548daddb6a4357c6b99758f3cc35b14",
-            "isMetadataFile": true,
-            "state": "u",
-            "isWorkspace": false,
-            "isArtifactRoot": false
-        }
-    ],
-    [
-        "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/profiles/Custom%3A Support Profile.profile-meta.xml",
-        {
-            "sourcePath": "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/profiles/Custom%3A Support Profile.profile-meta.xml",
-            "isDirectory": false,
-            "size": 9364,
-            "modifiedTime": 1532944381508,
-            "changeTime": 1532944381508,
-            "contentHash": "c0b7dbba71ca5c9aaf59e1d8e587e7daf7b3f5d9",
-            "isMetadataFile": true,
-            "state": "u",
-            "isWorkspace": false,
-            "isArtifactRoot": false
-        }
-    ],
-    [
         "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/remoteSiteSettings",
         {
             "sourcePath": "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/remoteSiteSettings",
@@ -1865,21 +1820,6 @@
             "changeTime": 1532624059030,
             "contentHash": "5d132103c3b0d00592e82b9241a1d141fbadfb3e",
             "isMetadataFile": false,
-            "state": "u",
-            "isWorkspace": false,
-            "isArtifactRoot": false
-        }
-    ],
-    [
-        "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/reportTypes/Datasets_with_Dataset_Labels_with_Dataset_Images.reportType-meta.xml",
-        {
-            "sourcePath": "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/reportTypes/Datasets_with_Dataset_Labels_with_Dataset_Images.reportType-meta.xml",
-            "isDirectory": false,
-            "size": 4921,
-            "modifiedTime": 1532624059031,
-            "changeTime": 1532624059031,
-            "contentHash": "6ea0fdb5923da4420c968ddc65952f7c6c76780f",
-            "isMetadataFile": true,
             "state": "u",
             "isWorkspace": false,
             "isArtifactRoot": false
@@ -2980,10 +2920,36 @@
         {
             "sourcePath": "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/objects/EinsteinAI_Settings__c",
             "isDirectory": true,
+            "size": 128,
+            "modifiedTime": 1533138775510,
+            "changeTime": 1533138775510,
+            "contentHash": "b3a681615284e79d18b64b407f1ee0acddca09fa",
+            "isMetadataFile": false,
+            "state": "u"
+        }
+    ],
+    [
+        "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/objects/EinsteinAI_Settings__c/fields/Einstein_Email__c.field-meta.xml",
+        {
+            "sourcePath": "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/objects/EinsteinAI_Settings__c/fields/Einstein_Email__c.field-meta.xml",
+            "isDirectory": false,
+            "size": 350,
+            "modifiedTime": 1533138775511,
+            "changeTime": 1533138775511,
+            "contentHash": "c6575812a4654e19ebe824e5235cf26391682134",
+            "isMetadataFile": true,
+            "state": "u"
+        }
+    ],
+    [
+        "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/objects/EinsteinAI_Settings__c/fields",
+        {
+            "sourcePath": "/Users/kreece/sfdx/salesforce_labs_einstein_vision_trainer/force-app/main/default/objects/EinsteinAI_Settings__c/fields",
+            "isDirectory": true,
             "size": 96,
-            "modifiedTime": 1533136300244,
-            "changeTime": 1533136300244,
-            "contentHash": "d615163d7c757580010fecba75c303c190b9fa71",
+            "modifiedTime": 1533138775511,
+            "changeTime": 1533138775511,
+            "contentHash": "827c830a35c42f727be9f05a4806eb448f583544",
             "isMetadataFile": false,
             "state": "u"
         }
