@@ -1,6 +1,6 @@
 public with sharing class UnSplash_Helper 
 {
-	public static Map<string, object> QueryPhotos(string access_token, string query, integer page)
+	public static Map<string, object> QueryPhotos(string access_token, string query, decimal page)
     {
         
         HttpRequest req = new HttpRequest();
@@ -22,13 +22,13 @@ public with sharing class UnSplash_Helper
         return ret;
     }
     
-    public static List<ImageWrapper> GetImages(Map<string, object> queryResults, integer pager)
+    public static List<ImageWrapper> GetImages(Map<string, object> queryResults, decimal pager)
     {
         List<ImageWrapper> items = new List<ImageWrapper>();
         
         List<object> results = (List<object>)queryResults.get('results');
 
-        integer imgId = (pager-1)*10;
+        decimal imgId = (pager-1)*10;
         
         for(object obj : results)
         {
@@ -47,7 +47,7 @@ public with sharing class UnSplash_Helper
             
 			ImageWrapper item = new ImageWrapper();
     
-            item.ImgId = imgId++;
+            item.ImgId = (integer)imgId++;
             item.Description = description;
             item.Url = small;
             item.RawUrl = raw;

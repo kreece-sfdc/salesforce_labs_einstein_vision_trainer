@@ -1,13 +1,15 @@
 public with sharing class Unsplash_GridController 
 { 
 	@AuraEnabled
-    public static List<ImageWrapper> SearchUnsplash(string query, integer page_number)
+    public static List<ImageWrapper> SearchUnsplash(string query, decimal page_number)
     {
-        if(page_number==null) 
-              page_number =1;
+        if(page_number == null) 
+        {
+            page_number = 1;
+        }
+        
         Map<string, object> results = Unsplash_Helper.QueryPhotos(AuthHelper.ReadAccessToken(Constants.Unsplash), query, page_number);
 
-        
         return Unsplash_Helper.GetImages(results, page_number);
     }
     
