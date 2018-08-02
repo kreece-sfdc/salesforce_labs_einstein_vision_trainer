@@ -151,7 +151,6 @@
             if (state === "SUCCESS") {
                 var images = component.get('v.items');
                 images = images.concat(response.getReturnValue());
-                console.log(images);
                 component.set('v.items', images);
                 
             }
