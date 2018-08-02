@@ -12,14 +12,14 @@
     <aura:handler name="init" value="{!this}" action="{!c.init}"/> 
   
     <aura:if isTrue="{!v.hasAuth==true}">
-        <lightning:card title="Search">
+        <lightning:card title="Search" variant="Narrow" class="slds-box slds-box_x-small">
             <div class="slds-grid slds-gutters">
                 <div class="slds-col slds-size_2-of-3">
                     <span onkeypress="{!c.keyCheck}">
                         <lightning:input label="Search" name="query" placeholder="Search and Pick your image" value="{!v.query}"/>
                     </span>
                 </div>
-                <div class="slds-col slds-size_1-of-3" style="vertical-align: bottom">
+                <div class="slds-col slds-size_1-of-3">
                     <lightning:button label="Search" onclick="{!c.search}"/>
                 </div>
             </div>

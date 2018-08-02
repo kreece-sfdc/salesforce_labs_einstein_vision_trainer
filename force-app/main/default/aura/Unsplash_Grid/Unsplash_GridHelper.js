@@ -54,7 +54,7 @@
         });
         $A.enqueueAction(action_s);
 
-        helper.displayToast(component, 'success', 'Ready to receive notifications.');
+        // helper.displayToast(component, 'success', 'Ready to receive notifications.');
         
         helper.check_auth(component,event,helper);
         

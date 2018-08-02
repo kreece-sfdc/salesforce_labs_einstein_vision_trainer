@@ -32,6 +32,9 @@
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
+            <componentName>Upload_Image</componentName>
+        </componentInstances>
+        <componentInstances>
             <componentName>Unsplash_Grid</componentName>
         </componentInstances>
         <componentInstances>
