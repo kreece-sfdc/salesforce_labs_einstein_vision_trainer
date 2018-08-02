@@ -12,18 +12,20 @@
     <aura:handler name="init" value="{!this}" action="{!c.init}"/> 
   
     <aura:if isTrue="{!v.hasAuth==true}">
-        <lightning:card title="Search" variant="Narrow" class="slds-box slds-box_x-small">
-            <div class="slds-grid slds-gutters">
-                <div class="slds-col slds-size_2-of-3">
+        <lightning:card title="Search" class="slds-p-around_x-small">
+            <div class="slds-grid slds-gutters slds-grid_vertical-align-end">
+                <div class="slds-col slds-size_1-of-2">
                     <span onkeypress="{!c.keyCheck}">
                         <lightning:input label="Search" name="query" placeholder="Search and Pick your image" value="{!v.query}"/>
                     </span>
                 </div>
-                <div class="slds-col slds-size_1-of-3">
+                <div class="slds-col slds-size_1-of-2">
+                    
                     <lightning:button label="Search" onclick="{!c.search}"/>
                 </div>
-            </div>
-            <fieldset class="slds-form-element" >
+			</div>
+            
+            <div class="slds-form-element slds-p-around_x-small" >
                 <div class="slds-form-element__control">
                     <aura:iteration items="{!v.items}" var="item" indexVar="index">
                         <div class="slds-visual-picker slds-visual-picker_medium">
@@ -31,23 +33,29 @@
                             <label for="{!item.ImgId}">
                             <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center"> 
                                 <span class="slds-is-selected">
-                                <span class="slds-icon_container">
-                                    <img src="{!$Resource.Selected}" />
-                                </span>
+                                    <span class="slds-icon_container">
+                                        <img src="{!$Resource.Selected}" />
+                                    </span>
                                 </span>
                                 <span class="slds-is-not-selected">
-                                <span class="slds-icon_container" style="max-height: 120px">
-                                    <img src="{!item.Url}" style="max-height: 120px"/>
-                                </span>
+                                    <span class="slds-icon_container" style="max-height: 120px">
+                                        <img src="{!item.Url}" style="max-height: 120px"/>
+                                    </span>
                                 </span>
                             </span>
                            </label>
                         </div>
                     </aura:iteration>
                 </div>
-              </fieldset>
-            <lightning:button label="Select" onclick="{!c.select}"/>
-            <lightning:button label="Load More" onclick="{!c.loadmore}"/>
+              </div>
+            <div class="slds-grid slds-grid_align-center slds-gutters">
+                <div class="slds-col slds-grow-none">
+            		<lightning:button label="Select" onclick="{!c.select}"/>
+                </div>
+                <div class="slds-col slds-grow-none">
+            		<lightning:button label="Load More" onclick="{!c.loadmore}"/>
+                </div>
+            </div>
             
         </lightning:card>
     </aura:if>
