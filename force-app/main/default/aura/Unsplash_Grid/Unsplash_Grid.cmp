@@ -29,7 +29,7 @@
                 <div class="slds-form-element__control">
                     <aura:iteration items="{!v.items}" var="item" indexVar="index">
                         <div class="slds-visual-picker slds-visual-picker_medium">
-                            <input type="checkbox" id="{!item.ImgId}" value="{!item.Selected}" name="options" />
+                            <input type="checkbox" id="{!item.ImgId}" checked="{!item.Selected}" name="options" onchange="{!c.check_change}" />
                             <label for="{!item.ImgId}">
                             <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center"> 
                                 <span class="slds-is-selected">

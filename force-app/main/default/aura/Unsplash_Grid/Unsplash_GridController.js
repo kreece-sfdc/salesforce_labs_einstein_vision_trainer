@@ -25,5 +25,8 @@
 		if (event.which == 13){
 			helper.search(component, event, helper);
 		}
-	}    
+	},
+	check_change: function(component, event, helper) {
+			helper.check_change(component, event, helper);
+	}
 })
