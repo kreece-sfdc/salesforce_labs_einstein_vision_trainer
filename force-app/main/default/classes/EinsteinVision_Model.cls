@@ -1,6 +1,5 @@
 public class EinsteinVision_Model 
 {
-
     @AuraEnabled
     public Long datasetId {get; set;}
     @AuraEnabled

@@ -1,60 +1,4 @@
 ({
-    trainDatasets : function(component, event, helper) {
-    	var action = component.get("c.GetDatasets");
-        action.setParams({ hasDataSetId : true });
-        action.setCallback(this, function(response) {
-            var state = response.getState();
-            if (state === "SUCCESS") {
-                
-                var dataSets = response.getReturnValue();
-                component.set('v.dataSets', dataSets);
-            }
-            else if (state === "INCOMPLETE") {
-                // do something
-            }
-                else if (state === "ERROR") {
-                    var errors = response.getError();
-                    if (errors) {
-                        if (errors[0] && errors[0].message) {
-                            console.log("Error message: " + 
-                                        errors[0].message);
-                        }
-                    } else {
-                        console.log("Unknown error");
-                    }
-                }
-        });
-        
-        $A.enqueueAction(action);  
-    },
-    train : function(component, event, helper) {
-    	var action = component.get("c.TrainDataset");
-        action.setParams({ dataSetIc : component.get('dataSetId') });
-        action.setCallback(this, function(response) {
-            var state = response.getState();
-            if (state === "SUCCESS") {
-                
-                //var dataSets = response.getReturnValue();
-                //component.set('v.dataSets', dataSets);
-            }
-            else if (state === "INCOMPLETE") {
-                // do something
-            }
-                else if (state === "ERROR") {
-                    var errors = response.getError();
-                    if (errors) {
-                        if (errors[0] && errors[0].message) {
-                            console.log("Error message: " + 
-                                        errors[0].message);
-                        }
-                    } else {
-                        console.log("Unknown error");
-                    }
-                }
-        });
-        
-        $A.enqueueAction(action);  
-    },
     check_auth : function(component,event,helper) {
         var action = component.get("c.HasAccessToken");
         
@@ -110,7 +54,7 @@
         });
         $A.enqueueAction(action_s);
         
-        helper.displayToast(component, 'success', 'Ready to receive notifications.');
+        //helper.displayToast(component, 'success', 'Ready to receive notifications.');
         
         helper.check_auth(component,event,helper);
         
@@ -171,7 +115,7 @@
         $A.enqueueAction(action);
     },
     select : function(component, event, helper) {
-        component.set('v.createDataset', true);
+        component.set('v.showCreateDataset', true);
         var action = component.get("c.GetDatasets");
         action.setParams({ hasDataSetId : false });
         action.setCallback(this, function(response) {
@@ -292,7 +236,7 @@
         // helper.refresh(component,event,helper);
         if(newNotification.provider == 'Unsplash' && newNotification.action == 'Deploy_Success')
         {
-            // helper.displayToast(component, 'info', newNotification.message);
+            helper.displayToast(component, 'success', 'Authentication Complete!');
             helper.check_auth(component,event,helper);
         }
     },
@@ -306,12 +250,11 @@
     },
     
     create : function(component,event,helper) {
-       
         var items = component.get("v.items");
-        
         var action = component.get("c.CreateDataset");
         action.setParams(
             { 
+                dataSetId: component.get('v.dataSetId'),
             	name : component.get("v.dataSetName"), 
                 labels: component.get("v.dataSetLabels"),
                 itemsString: JSON.stringify(items)
@@ -323,6 +266,8 @@
                 
                 var dataSetId = response.getReturnValue();
                 component.set('v.dataSetId', dataSetId);
+                
+                component.set('v.isComplete', true);
             }
             else if (state === "INCOMPLETE") {
                 // do something

@@ -5,7 +5,10 @@
         if (component.get('v.sessionId') != null)
             helper.connectCometd(component);
     },
-    
+    change : function(component, event, helper) {  
+        var source = event.getSource().get('v.name');
+        console.log(source);
+    },
     init : function(component, event, helper) {  
         helper.init(component, event, helper);
     },
@@ -23,12 +26,6 @@
     },
     create : function(component, event, helper) {
         helper.create(component, event, helper);		
-    },
-    train : function(component, event, helper) {
-        helper.train(component, event, helper);		
-    },
-    trainDatasets : function(component, event, helper) {
-        helper.trainDatasets(component, event, helper);		
     },
     keyCheck : function(component, event, helper) {
         if (event.which == 13){

@@ -1,0 +1,13 @@
+<aura:component implements="flexipage:availableForAllPageTypes" controller="Notifier_Controller">
+	
+    <ltng:require scripts="{!$Resource.cometd}" afterScriptsLoaded="{!c.onCometdLoaded}"/>
+
+    <!-- attributes to control cometD -->
+    <aura:attribute name="sessionId" type="String"/>
+    <aura:attribute name="cometd" type="Object"/>
+    <aura:attribute name="cometdSubscriptions" type="Object[]"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/> 
+    
+    
+</aura:component>

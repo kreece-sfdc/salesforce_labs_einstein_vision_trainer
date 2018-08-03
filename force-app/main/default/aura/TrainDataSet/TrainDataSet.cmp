@@ -1,0 +1,49 @@
+<aura:component controller="Unsplash_GridController" implements="lightning:availableForFlowScreens,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    
+    <ltng:require scripts="{!$Resource.cometd}" afterScriptsLoaded="{!c.onCometdLoaded}"/>
+    
+    <!-- attributes to control cometD -->
+    <aura:attribute name="sessionId" type="String"/>
+    <aura:attribute name="cometd" type="Object"/>
+    <aura:attribute name="cometdSubscriptions" type="Object[]"/>
+    
+    <aura:attribute name="dataSets" type="Object[]" />
+    <aura:attribute name="dataSetId" type="Id" />
+    
+    <aura:attribute name="hasAuth" type="boolean" default="false" />
+    <aura:attribute name="authUrl" type="string" />
+    <aura:attribute name="isComplete" type="boolean" default="false" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/> 
+    
+    <aura:if isTrue="{!v.hasAuth==true}">
+        
+        <lightning:card title="Create Dataset">
+            <div class="slds-grid">
+                <div class="slds-col">
+                    <div>
+                        <lightning:select name="dataSets" label="Select a Dataset" required="false" value="{!v.dataSetId}">
+                            <option value="">-- None --</option>
+                            <aura:iteration items="{!v.dataSets}" var="item">
+                                <option value="{!item.Id}" text="{!item.Name}"></option>
+                            </aura:iteration>
+                        </lightning:select>
+                    </div>
+                    <div class="slds-size_1-of-3" style="">
+                        <lightning:button label="Submit" onclick="{!c.train}"/>
+                    </div>
+                </div>
+            </div>
+        </lightning:card>
+        
+    </aura:if>
+    
+    <aura:if isTrue="{!v.hasAuth==false}">
+        <lightning:card title="Search" class="slds-m-bottom_small">
+            <h2><a href="{!v.authUrl}" target="_blank">Please autenticate to Unsplash to Continue</a></h2>  
+            <a href="javascript:void(0)" onclick="{!c.refresh}">Refresh</a>               
+        </lightning:card>
+    </aura:if>
+    
+    
+</aura:component>
