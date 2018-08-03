@@ -139,6 +139,10 @@ public with sharing class VisionHelper
             upsert dataSetImagesToUpdate;
         }
         
+        for(Dataset__c dataSet : dataSets)
+        {
+	        EventHelper.PublishDatasetEvent(dataSet.Id, Constants.Dataset_Accepted);
+        }
         //CreateExamples(dataSetIds);
     }
     

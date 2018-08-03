@@ -1,7 +1,7 @@
 public class ImageWrapper 
 {
     @AuraEnabled
-    public integer ImgId { get; set; }
+    public Integer ImgId { get; set; }
     @AuraEnabled
     public string Description { get; set; }
     @AuraEnabled
@@ -14,4 +14,15 @@ public class ImageWrapper
 	public string Photographer { get; set; }
     @AuraEnabled
 	public string PhotographerSocial { get; set; }
+    
+    public ImageWrapper()
+    {
+        ImgId = 0;
+        Description = '';
+        Url = '';
+        Selected = false;
+        RawUrl = '';
+       	Photographer = '';
+        PhotographerSocial = '';
+    }
 }

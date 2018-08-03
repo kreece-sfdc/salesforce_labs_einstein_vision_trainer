@@ -37,8 +37,7 @@ public with sharing class UnSplash_Helper
             string description = (string)mapItem.get('description');
             
             Map<string, object> urls = (Map<string, object>)mapItem.get('urls');
-            
-            string raw = (string)urls.get('raw');
+            string raw = (string)urls.get('regular');
             string small = (string)urls.get('small');
             
             Map<string, object> userSec = (Map<string, object>)mapItem.get('user');
