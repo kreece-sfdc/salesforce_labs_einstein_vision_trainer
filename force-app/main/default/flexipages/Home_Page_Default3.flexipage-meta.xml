@@ -46,9 +46,6 @@
             </componentInstanceProperties>
             <componentName>flowruntime:interview</componentName>
         </componentInstances>
-        <componentInstances>
-            <componentName>home:assistant</componentName>
-        </componentInstances>
         <mode>Replace</mode>
         <name>sidebar</name>
         <type>Region</type>

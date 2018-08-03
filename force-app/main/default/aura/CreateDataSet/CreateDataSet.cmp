@@ -59,24 +59,22 @@
         
         <aura:if isTrue="{!v.showCreateDataset==false}">
             <lightning:card title="Model Images">
-                <div class="slds-grid">
-                    <div class="slds-col">
-                        <div class="slds-size_1-of-1">
+                <div class="slds-grid slds-gutters slds-grid_vertical-align-end">
+                        <div class="slds-col slds-size_1-of-2">
                             <span onkeypress="{!c.keyCheck}">
                                 <lightning:input label="Search" name="query" placeholder="Search" value="{!v.query}"/>
                             </span>
                         </div>
-                        <div class="slds-size_1-of-1" style="vertical-align: bottom">
+                        <div class="slds-col slds-size_1-of-2">
                             <lightning:button label="Search" onclick="{!c.search}"/>
                         </div>
                     </div>
-                </div>
                <aura:if isTrue="{!v.showResults==true}">
                     <form aura:id="form" id="form" method="post">
                     <fieldset class="slds-form-element">
                         <div class="slds-form-element__control">
                             <aura:iteration items="{!v.items}" var="item">
-                                <div class="">
+                                <div class="slds-m-around_x-small">
                                     <ui:inputCheckbox value="{!item.Selected}" name="options" aura:id="options" />
                                     <img src="{!item.Url}" style="max-height: 120px"/>
                                 </div>
