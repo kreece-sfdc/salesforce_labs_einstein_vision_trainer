@@ -2,8 +2,9 @@
     <aura:attribute name="accept" type="List" default="['.jpg', '.jpeg']"/>
     <aura:attribute name="multiple" type="Boolean" default="true"/>
     <aura:attribute name="disabled" type="Boolean" default="false"/>
-    <aura:attribute name="myRecordId" type="String" default="0015C00000KXqtZQAT"/> <!-- Forced RecordId ??? -->
-
+    <aura:attribute name="myRecordId" type="String" default="none"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/> 
+    
     <lightning:card title="Upload" class="slds-box slds-box_x-small">
         <lightning:fileUpload  name="fileUploader"
                             label= "Upload your image"

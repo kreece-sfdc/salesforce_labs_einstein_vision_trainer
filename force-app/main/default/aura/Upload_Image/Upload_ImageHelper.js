@@ -6,7 +6,7 @@
         var toastEvent = $A.get("e.force:showToast");
         toastEvent.setParams({
             "title": "Success!",
-            "message": "File "+fileName+" Uploaded successfully."
+            "message": "File "+fileName+" Uploaded successfully."+documentId
         });
         toastEvent.fire();
         var action = component.get("c.PushToCustomObject");
@@ -31,7 +31,33 @@
             }
         });
         $A.enqueueAction(action);
+    },
+    init : function(component, event, helper) {
+        var recordId = component.get("v.myRecordId");
+        var action = component.get("c.CreateRecordId");
+        action.setParams({ recordId : recordId });
+        action.setCallback(this, function(response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                component.set("v.myRecordId",response.getReturnValue());
+            }
+            else if (state === "INCOMPLETE") {
+                // do something
+            }
+            else if (state === "ERROR") {
+                var errors = response.getError();
+                if (errors) {
+                    if (errors[0] && errors[0].message) {
+                        console.log("Error message: " + errors[0].message);
+                    }
+                } else {
+                    console.log("Unknown error");
+                }
+            }
+        });
+        $A.enqueueAction(action);
     }
+
         /* Open the file
 
         $A.get('e.lightning:openFiles').fire({
