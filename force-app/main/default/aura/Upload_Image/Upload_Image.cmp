@@ -7,7 +7,7 @@
     
     <lightning:card title="Upload" class="slds-box slds-box_x-small">
         <lightning:fileUpload  name="fileUploader"
-                            label= "Upload your image"
+                            label= "What is it?"
                             multiple="{!v.multiple}"
                             accept="{!v.accept}"
                             disabled="{!v.disabled}"
