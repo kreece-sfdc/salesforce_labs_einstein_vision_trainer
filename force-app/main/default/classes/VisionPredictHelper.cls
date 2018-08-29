@@ -3,15 +3,16 @@ public with sharing class VisionPredictHelper
 	@InvocableMethod(label='Submit Image for Classification to Einstein Vision')
     public static void SubmitImage(List<Id> itemIds)
     {
-        Map<Image_Classification__c, List<Vision.Prediction>> classificationResults = new Map<Image_Classification__c, List<Vision.Prediction>>();
-        string access_token = AuthHelper.GetVisionAccessToken();
+        EinsteinVision_PredictionService ps = new EinsteinVision_PredictionService();
         
-        List<Image_Classification__c> items = [SELECT Url__c, Status__c FROM Image_Classification__c WHERE Id IN: itemIds];
+        Map<Image_Classification__c, EinsteinVision_PredictionResult> classificationResults = new Map<Image_Classification__c, EinsteinVision_PredictionResult>();
+        
+        List<Image_Classification__c> items = [SELECT Url__c, Status__c, Classifier__c FROM Image_Classification__c WHERE Id IN: itemIds];
         
         for(Image_Classification__c item : items)
         {
-        	List<Vision.Prediction> results = Vision.predictUrl(item.Url__c, access_token, 'GeneralImageClassifier');
-            
+            EinsteinVision_PredictionResult results = ps.predictUrl(item.Classifier__c, item.Url__c, null);
+             
             classificationResults.put(item, results);
         }
         
@@ -19,7 +20,7 @@ public with sharing class VisionPredictHelper
         
         for(Image_Classification__c item : classificationResults.keySet())
         {
-            for(Vision.Prediction result : classificationResults.get(item))
+            for(EinsteinVision_Probability result : classificationResults.get(item).probabilities)
             {
                 Image_Classification_Result__c res = new Image_Classification_Result__c
                     (
@@ -32,6 +33,7 @@ public with sharing class VisionPredictHelper
             }
             
             item.Status__c = 'Completed';
+            EventHelper.PublishClassificationEvent(item.Id, Constants.Classification_Results);
         }
         
         if(!results.isEmpty())

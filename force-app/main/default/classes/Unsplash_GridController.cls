@@ -1,20 +1,58 @@
 public with sharing class Unsplash_GridController 
 { 
     @AuraEnabled
-    public static EinsteinVision_Model TrainDataset(Id dataSetId)
+    public static Map<string, object> TrainDataset(Id dataSetId)
     {
         Dataset__c dataSet = [SELECT Id, Name, Dataset_Id__c, Model_Id__c FROM Dataset__c WHERE Id =: dataSetId LIMIT 1];
         
         if(dataSet != null)
         {
-        	EinsteinVision_PredictionService service = new EinsteinVision_PredictionService();
-        	EinsteinVision_Model modelResult = service.trainDataset((long)dataSet.Dataset_Id__c, dataSet.Name, 0, 0, '{ "withFeedback": true }');
+            
+            EinsteinVision_PredictionService service = new EinsteinVision_PredictionService();
+            Map<string, object> modelResult = service.trainDataset((long)dataSet.Dataset_Id__c, dataSet.Name, 0, 0, '{ "withFeedback": true }');
             
             if(modelResult != null)
             {
-                dataSet.Model_Id__c = modelResult.modelId;
+                dataSet.Model_Id__c = (string)modelResult.get('modelId');
                 upsert dataSet;
                 
+                if((string)modelResult.get('status') == 'QUEUED')
+                {
+                	EventHelper.PublishDatasetEvent(dataSetId, Constants.Dataset_Training_Queued);
+                }
+                else if((string)modelResult.get('status') == 'RUNNING')
+                {
+                    EventHelper.PublishDatasetEvent(dataSetId, Constants.Dataset_Training_Started);
+                }
+                else if((string)modelResult.get('status') == 'SUCCEEDED')
+                {
+                    EventHelper.PublishDatasetEvent(dataSetId, Constants.Dataset_Training_Succeeded);
+                }
+                else if((string)modelResult.get('status') == 'FAILED')
+                {
+                    EventHelper.PublishDatasetEvent(dataSetId, Constants.Dataset_Training_Failed);
+                }
+                
+                return modelResult;
+            }
+            
+        }
+        
+        return null;
+    }
+    
+    @AuraEnabled
+    public static Map<string, object> CheckDatasetTraining(Id dataSetId)
+    {
+        Dataset__c dataSet = [SELECT Id, Name, Dataset_Id__c, Model_Id__c FROM Dataset__c WHERE Id =: dataSetId LIMIT 1];
+        
+        if(dataSet != null)
+        {
+            EinsteinVision_PredictionService service = new EinsteinVision_PredictionService();
+            Map<string, object> modelResult = service.getModel(dataSet.Model_Id__c);
+            
+            if(modelResult != null)
+            {
                 return modelResult;
             }
         }
@@ -23,10 +61,9 @@ public with sharing class Unsplash_GridController
     }
     
     @AuraEnabled
-    public static Id CreateDataset(Id dataSetId, string name, string labels, string itemsString)
+    public static Id CreateDataset(Id dataSetId, Id dataSetLabelId, string name, string label, string itemsString)
     {
         List<object> items = (List<object>)JSON.deserializeUntyped(itemsString);
-        List<Dataset_Label__c> dataSetLabels = new List<Dataset_Label__c>();
         List<Dataset_Image__c> dataSetImages = new List<Dataset_Image__c>();
         
         if(dataSetId == null)
@@ -39,26 +76,35 @@ public with sharing class Unsplash_GridController
             
             dataSetId = dataSet.Id;
             
-            for(string label : labels.split(','))
-            {
-                Dataset_Label__c dataSetLabel = new Dataset_Label__c
-                    (
-                        Dataset__c = dataSet.Id,
-                        Name = label
-                    );
-                dataSetLabels.add(dataSetLabel);
-            }
+            Dataset_Label__c dataSetLabel = new Dataset_Label__c
+                (
+                    Dataset__c = dataSet.Id,
+                    Name = label
+                );
+            insert dataSetLabel;
+            dataSetLabelId = dataSetLabel.Id;
+        }
+        else if(dataSetLabelId == null)
+        {
+            Dataset_Label__c dataSetLabel = new Dataset_Label__c
+                (
+                    Dataset__c = dataSetId,
+                    Name = label
+                );
+            insert dataSetLabel;
+            dataSetLabelId = dataSetLabel.Id;
         }
         
         for(object item : items)
         {
             Map<string, object> itemMap = (Map<string, object>)item;
-            system.debug(itemMap);
+            
             if((boolean)itemMap.get('Selected') == true)
             {
-	            Dataset_Image__c dataSetImage = new Dataset_Image__c
+                Dataset_Image__c dataSetImage = new Dataset_Image__c
                     (
                         Dataset__c = dataSetId,
+                        Dataset_Label__c = dataSetLabelId,
                         Raw_Image__c = (string)itemMap.get('RawUrl')
                     );
                 
@@ -66,17 +112,12 @@ public with sharing class Unsplash_GridController
             }
         }
         
-        if(!dataSetLabels.isEmpty())
-        {
-            insert dataSetLabels;
-        }
-        system.debug(dataSetImages.size());
         if(!dataSetImages.isEmpty())
         {
             insert dataSetImages;
         }
         
-        EventHelper.PublishDatasetEvent(dataSetId, Constants.Dataset_Create);
+        EventHelper.PublishDatasetEvent(dataSetId, Constants.Dataset_Created);
         
         return dataSetId;
     }
@@ -92,7 +133,13 @@ public with sharing class Unsplash_GridController
         return [SELECT Id, Name FROM Dataset__c WHERE Id != null];
     }
     
-	@AuraEnabled
+    @AuraEnabled
+    public static List<Dataset_Label__c> GetDatasetLabels(Id dataSetId)
+    {
+        return [SELECT Id, Name FROM Dataset_Label__c WHERE Dataset__c =: dataSetId];
+    }
+    
+    @AuraEnabled
     public static List<ImageWrapper> SearchUnsplash(string query, decimal page_number)
     {
         if(page_number == null) 
@@ -101,7 +148,7 @@ public with sharing class Unsplash_GridController
         }
         
         Map<string, object> results = Unsplash_Helper.QueryPhotos(AuthHelper.ReadAccessToken(Constants.Unsplash), query, page_number);
-
+        
         return Unsplash_Helper.GetImages(results, page_number);
     }
     
@@ -124,7 +171,14 @@ public with sharing class Unsplash_GridController
     }
     
     @AuraEnabled
-    public static String getSessionId() {
-      return UserInfo.getSessionId();
+    public static String getSessionId() 
+    {
+        return UserInfo.getSessionId();
+    }
+    
+    @AuraEnabled
+    public static void PushToast(Id dataSetId, string action) 
+    {
+        EventHelper.PublishDatasetEvent(dataSetId, action);
     }
 }

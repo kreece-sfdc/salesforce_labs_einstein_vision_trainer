@@ -8,6 +8,7 @@ public class EinsteinVision_HttpClient
     private EinsteinVision_PredictionService predictionService;
     private JSONParser parser;
     private Blob body;
+    public string bodyString;
 
     // Values for HTTP response
     private String errorMessage;
@@ -105,6 +106,7 @@ public class EinsteinVision_HttpClient
         if (getStatusCode()==400 || getStatusCode()==200) {
             try {
                 parser = JSON.createParser(response.getBody());
+                bodyString = response.getBody();
             } catch (Exception e) {
                 errorMessage = 'Could not read JSON data';
                 return;

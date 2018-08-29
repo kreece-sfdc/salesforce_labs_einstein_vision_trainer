@@ -27,6 +27,9 @@
     create : function(component, event, helper) {
         helper.create(component, event, helper);		
     },
+    getLabels : function(component, event, helper) {
+        helper.getLabels(component, event, helper);		
+    },
     keyCheck : function(component, event, helper) {
         if (event.which == 13){
             helper.search(component, event, helper);

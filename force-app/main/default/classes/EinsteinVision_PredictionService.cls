@@ -449,7 +449,7 @@ public class EinsteinVision_PredictionService {
 * @return
 * @
 */
-    public EinsteinVision_Model trainDataset(EinsteinVision_Dataset dataset, String name, Integer epochs, Decimal learningRate, String trainParams) {
+    public Map<string, object> trainDataset(EinsteinVision_Dataset dataset, String name, Integer epochs, Decimal learningRate, String trainParams) {
         return trainDataset(dataset.id, name, epochs, learningRate, trainParams);
     }
     
@@ -464,7 +464,7 @@ public class EinsteinVision_PredictionService {
 * @param learningRate
 * Optional. The learning rate, valid values are betweed 0.0001 and 0.01. Set to 0 if you want to use the default.
 */
-    public EinsteinVision_Model trainDataset(Long datasetId, String name, Integer epochs, Decimal learningRate, String trainParams) {
+    public Map<string, object> trainDataset(Long datasetId, String name, Integer epochs, Decimal learningRate, String trainParams) {
         EinsteinVision_Dataset dataset = getDataset(datasetId);
         if (dataset != null) {
             if (dataset.totalExamples>0) {
@@ -480,8 +480,9 @@ public class EinsteinVision_PredictionService {
                 if (client.isError()) {
                     handleError(client.getStatusCode(), client.getResponseError());
                 } else {
-                    EinsteinVision_Model model = (EinsteinVision_Model)client.getParser().readValueAs(EinsteinVision_Model.class);
-                    System.debug('New Model with id ' + model.modelId + ' has been created.');
+                    
+                    Map<string, object> model = (Map<string, object>)JSON.deserializeUntyped(client.bodyString);
+                    System.debug('New Model with id ' + model.get('modelId') + ' has been created.');
                     return model;
                 }
             } else {
@@ -498,7 +499,7 @@ public class EinsteinVision_PredictionService {
 * @return
 * @
 */
-    public EinsteinVision_Model getModel(String modelId) {
+    public Map<string, object> getModel(String modelId) {
         System.debug('Starting getModel call with parameter ' + modelId);
         EinsteinVision_HttpClient client = new EinsteinVision_HttpClient(this, TRAIN + '/' + modelId);
         System.debug('Target URL is ' + client.getUrl());
@@ -510,7 +511,8 @@ public class EinsteinVision_PredictionService {
         if (client.isError()) {
             handleError(client.getStatusCode(), client.getResponseError());
         } else {
-            EinsteinVision_Model model = (EinsteinVision_Model)client.getParser().readValueAs(EinsteinVision_Model.class);
+            //EinsteinVision_Model model = (EinsteinVision_Model)client.getParser().readValueAs(EinsteinVision_Model.class);
+            Map<string, object> model = (Map<string, object>)JSON.deserializeUntyped(client.bodyString);
             System.debug('Model status has been read.');
             return model;
         }

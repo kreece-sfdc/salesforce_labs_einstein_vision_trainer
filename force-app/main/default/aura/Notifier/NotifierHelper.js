@@ -81,24 +81,78 @@
     },
     onReceiveNotification : function(component, event, helper, platformEvent) {
         
+        var utilitybar = component.find('utilitybar');
+        
         var helper = this;
         // Extract notification from platform event
         var newNotification = {
             time : $A.localizationService.formatDateTime(
                 platformEvent.data.payload.CreatedDate, 'HH:mm'),
             action : platformEvent.data.payload.Action__c,
+            message : platformEvent.data.payload.Message__c,
             dataSetId : platformEvent.data.payload.Dataset_Id__c,
             classificationId : platformEvent.data.payload.Classification_Id__c 
         };
+        
+        if(newNotification.action == 'Dataset_Training_Queued' ||
+          newNotification.action == 'Dataset_Training_Started')
+        {
+            var inProgress = component.get('v.inProgress');
+            
+            if(inProgress == false) {
+                component.set('v.inProgress', true);
+        		helper.checkTraining(component, event, helper, newNotification.dataSetId);   
+            }
+        }
         
         // helper.refresh(component,event,helper);
         if(newNotification.action == 'Dataset_Accepted')
         {
             helper.displayToast(component, 'success', 'Dataset successfully accepted by Einstein Vision');
         }
+        else if(newNotification.action == 'Dataset_Training_Queued')
+        {
+            utilitybar.setUtilityLabel({ label: 'Queued' });
+            utilitybar.setUtilityIcon({
+                icon: 'pause'
+            }); 
+        }
+        else if(newNotification.action == 'Dataset_Training_Started')
+        {
+            component.set('v.progress', newNotification.message * 100);
+            utilitybar.setUtilityLabel({ label: 'Training... (' + newNotification.message * 100 + '%)' });
+            
+            utilitybar.setUtilityIcon({
+                icon: 'spinner'
+            });
+        }
+        else if(newNotification.action == 'Dataset_Training_Succeeded')
+        {
+            // utility bar progress
+            //utilitybar.minimizeUtility(); 
+            utilitybar.setUtilityLabel({ label: 'Einstein Vision Trainer' });
+            utilitybar.setUtilityIcon({
+                icon: 'check'
+            });
+            component.set('v.inProgress', false);
+            component.set('v.progress', 0);
+        }
+        else if(newNotification.action == 'Dataset_Training_Failed')
+        {
+            utilitybar.setUtilityLabel({ label: 'Einstein Vision Trainer' });
+            utilitybar.setUtilityIcon({
+                icon: 'close'
+            });
+            component.set('v.inProgress', false);
+            component.set('v.progress', 0);
+        }
         else if(newNotification.action == 'Classification_Results')
         {
-            helper.displayToast(component, 'success', 'Image Classification Results have been received by Einstein Vision');
+            helper.displayToast(component, 'success', 'Image Classification Results received by Einstein Vision');
+        }
+        else if(newNotification.action == 'Classification_Created')
+        {
+            helper.displayToast(component, 'success', 'Image Classification sent to Einstein Vision');
         }
     },
     displayToast : function(component, type, message) {
@@ -109,4 +163,37 @@
         });
         toastEvent.fire();
     },
+    checkTraining : function(component, event, helper, dataSetId) {
+        
+        var id = setInterval(
+            function() { 
+                
+                var action = component.get("c.CheckDatasetTraining");
+                action.setParams({ dataSetId : dataSetId });
+                action.setCallback(this, function(response) {
+                    var state = response.getState();
+                    if (state === "SUCCESS") {
+                        
+                        var dataSetResult = response.getReturnValue();
+                        if(dataSetResult != null) {
+                            if(dataSetResult.status == 'FAILED') {
+                                helper.displayToast(component, 'error', dataSetResult.failureMsg);
+                                clearInterval(id);
+                            }
+                            else if(dataSetResult.status == 'SUCCEEDED') {
+                                helper.displayToast(component, 'success', 'The ' + dataSetResult.name + ' dataset has trained successfully');
+                                clearInterval(id);
+                            }
+                            else {
+                                console.log(dataSetResult.status);        
+                            }
+                        }
+                    }
+                });
+                
+                $A.enqueueAction(action);
+                
+            }, 5000
+        );
+    }
 })

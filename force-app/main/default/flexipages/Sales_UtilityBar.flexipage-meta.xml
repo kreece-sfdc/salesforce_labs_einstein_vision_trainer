@@ -20,7 +20,7 @@
             <componentInstanceProperties>
                 <name>label</name>
                 <type>decorator</type>
-                <value>Notifier</value>
+                <value>Einstein Vision Trainer</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>scrollable</name>

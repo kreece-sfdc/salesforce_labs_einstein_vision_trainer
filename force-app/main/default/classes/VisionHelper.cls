@@ -11,15 +11,16 @@ public with sharing class VisionHelper
         
         List<Dataset__c> dataSets = [SELECT Name, Dataset_Id__c FROM Dataset__c WHERE Id IN: dataSetIds];
         List<Dataset_Label__c> dataSetLabels = [SELECT Name, Dataset_Label_Id__c, Dataset__c FROM Dataset_Label__c WHERE Dataset__c IN: dataSetIds];
-        List<Dataset_Image__c> dataSetImages = [SELECT Name, Dataset_Image_Id__c, Raw_Image__c, Dataset__c, Dataset__r.Dataset_Id__c FROM Dataset_Image__c WHERE Dataset__c IN: dataSetIds AND Dataset_Image_Id__c = NULL];
+        List<Dataset_Image__c> dataSetImages = [SELECT Name, Dataset_Image_Id__c, Raw_Image__c, Dataset__c, Dataset__r.Dataset_Id__c, Dataset_Label__c FROM Dataset_Image__c WHERE Dataset__c IN: dataSetIds AND Dataset_Image_Id__c = NULL];
         //Map<EinsteinVision_Dataset, Map<Dataset__c, List<Dataset_Label__c>>> results = new Map<EinsteinVision_Dataset, Map<Dataset__c, List<Dataset_Label__c>>>();
         
         Map<Id, long> dataSetMap = new Map<Id, long>();
-        Map<Id, Id> dataSetLabelMap = new Map<Id, Id>();
+        Map<Id, long> dataSetImageLabelMap = new Map<Id, long>();
         
         for(Dataset__c dataSet : dataSets)
         {
             List<Dataset_Label__c> dataSetLabelList = new List<Dataset_Label__c>();  
+            
             List<string> labels = new List<string>();
             
             for(Dataset_Label__c dataSetLabel : dataSetLabels)
@@ -60,20 +61,31 @@ public with sharing class VisionHelper
                 
                 for(Dataset_Label__c dataSetLabel : dataSetLabelList)
                 {
-                    dataSetMap.put(dataSetLabel.Id, (long)dataSetLabel.Dataset_Label_Id__c);
+                    if(dataSetLabel.Dataset_Label_Id__c == null)
+                    {
+                        EinsteinVision_Label label = predictionService.createLabel((long)dataSet.Dataset_Id__c, dataSetLabel.Name);
+                        system.debug(JSON.serialize(label));
+                        if(label != null && label.id != null)
+                        {
+                            dataSetMap.put(dataSetLabel.Id, label.id);
+                            
+                        }
+                    }
+                    else 
+                    {
+                    	dataSetMap.put(dataSetLabel.Id, (long)dataSetLabel.Dataset_Label_Id__c);
+                    }
                 }
                 
                 //dataSetResult.id = (long)dataSet.Dataset_Id__c;
             }
-            
-            dataSetLabelMap.put(dataSet.Id, dataSetLabelList.get(0).Id);
-            
+           
             /*Map<Dataset__c, List<Dataset_Label__c>> dataSetMap = new Map<Dataset__c, List<Dataset_Label__c>>();
             dataSetMap.put(dataSet, dataSetLabelList);
             results.put(dataSetResult, dataSetMap);*/
 		}
         
-        for(Dataset_Image__c dataSetImage : dataSetImages)
+        /*for(Dataset_Image__c dataSetImage : dataSetImages)
         {
             HttpResponse res = HttpHelper.Request('GET', dataSetImage.Raw_Image__c, null, null);
             Blob imageBlob;
@@ -94,7 +106,7 @@ public with sharing class VisionHelper
             {
                 dataSetMap.put(dataSetImage.Id, example.id);
             }
-        }
+        }*/
         
         for(Dataset__c dataSet : dataSets)
         {
@@ -111,15 +123,17 @@ public with sharing class VisionHelper
             {
                 dataSetLabel.Dataset_Label_Id__c = dataSetMap.get(dataSetLabel.Id);
                 dataSetLabelsToUpdate.add(dataSetLabel);
+                system.debug('labelToUpdate');
             }
         }
         
         for(Dataset_Image__c dataSetImage : dataSetImages)
         {
-            if(dataSetImage.Dataset_Image_Id__c == null && dataSetMap.containsKey(dataSetImage.Id))
+            system.debug(dataSetMap.containsKey(dataSetImage.Dataset_Label__c));
+            if(dataSetMap.containsKey(dataSetImage.Dataset_Label__c))
             {
-                dataSetImage.Dataset_Image_Id__c = dataSetMap.get(dataSetImage.Id);
-                dataSetImagesToUpdate.add(dataSetImage);
+            	long labelId = dataSetMap.get(dataSetImage.Dataset_Label__c);
+                dataSetImageLabelMap.put(dataSetImage.Id, labelId);
             }
         }
           
@@ -134,15 +148,22 @@ public with sharing class VisionHelper
             upsert dataSetLabelsToUpdate;
         }
         
-        if(!dataSetImagesToUpdate.isEmpty())
+        /*if(!dataSetImagesToUpdate.isEmpty())
         {
             upsert dataSetImagesToUpdate;
-        }
+        }*/
         
-        for(Dataset__c dataSet : dataSets)
+        DatasetImageBatch batch = new DatasetImageBatch();
+        batch.DataSetIds = dataSetIds;
+        batch.DataSetImageLabelMap = dataSetImageLabelMap;
+        batch.DataSetMap = dataSetMap;
+        
+        database.executeBatch(batch, 10);
+        
+        /*for(Dataset__c dataSet : dataSets)
         {
 	        EventHelper.PublishDatasetEvent(dataSet.Id, Constants.Dataset_Accepted);
-        }
+        }*/
         //CreateExamples(dataSetIds);
     }
     
@@ -193,7 +214,7 @@ public with sharing class VisionHelper
         }
         
         for(EinsteinVision_Example example : dataSetImageMap.keySet())
-        {
+        
             Dataset_Image__c image = dataSetImageMap.get(example);
             
             image.Dataset_Image_Id__c = example.id;

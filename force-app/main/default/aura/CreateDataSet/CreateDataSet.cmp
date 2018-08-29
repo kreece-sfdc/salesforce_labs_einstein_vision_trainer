@@ -12,17 +12,20 @@
     <aura:attribute name="showCreateDataset" type="boolean" default="false" />
     
     <aura:attribute name="dataSets" type="Object[]" />
-    
+    <aura:attribute name="dataSetLabels" type="Object[]" />
+    <aura:attribute name="dataSetAction" type="string" />
 
     <aura:attribute name="items" type="Object[]" />
     <aura:attribute name="query" type="string" />
     <aura:attribute name="hasAuth" type="boolean" default="false" />
     <aura:attribute name="authUrl" type="string" />
     <aura:attribute name="page_number" type="integer" default="1" />
+
     <aura:attribute name="dataSetId" type="Id" />
+    <aura:attribute name="dataSetLabelId" type="Id" />
     
     <aura:attribute name="dataSetName" type="string" />
-    <aura:attribute name="dataSetLabels" type="string" />
+    <aura:attribute name="dataSetLabel" type="string" />
     
     <aura:attribute name="isComplete" type="boolean" default="false" />
     
@@ -34,24 +37,55 @@
             <lightning:card title="Create Dataset">
                 <div class="slds-grid">
                     <div class="slds-col">
-                        <div>
-                            <lightning:select name="dataSets" label="Select a Dataset" required="false" value="{!v.dataSetId}">
+                        
+                        <div class="slds-size_1-of-1">
+                            <lightning:select name="datasetAction" label="" required="false" value="{!v.dataSetAction}">
+                                <option value="">-- None --</option>
+                                <option value="new">Create New</option>
+                                <option value="existing">Add to Existing</option>
+                            </lightning:select>
+                        </div>
+                        
+                        
+                        
+                        <aura:if isTrue="{!v.dataSetAction=='existing'}">
+                        <div class="slds-size_1-of-1">
+                            <lightning:select name="dataSets" label="Select a Dataset" required="false" value="{!v.dataSetId}" onchange="{!c.getLabels}">
                                 <option value="">-- None --</option>
                                 <aura:iteration items="{!v.dataSets}" var="item">
                                     <option value="{!item.Id}" text="{!item.Name}"></option>
                                 </aura:iteration>
                             </lightning:select>
                         </div>
-                        <div>OR</div>
+                        <aura:if isTrue="{!v.dataSetLabels.length>0}">
+                            <div class="slds-size_1-of-1">
+                                <lightning:select name="dataSetLabels" label="Select a Dataset Label" required="false" value="{!v.dataSetLabelId}">
+                                    <option value="">-- None --</option>
+                                    <aura:iteration items="{!v.dataSetLabels}" var="item">
+                                        <option value="{!item.Id}" text="{!item.Name}"></option>
+                                    </aura:iteration>
+                                </lightning:select>
+                            </div>
+                            <div class="slds-size_1-of-1">
+                                <lightning:input label="Enter Dataset Label" name="dataSetLabel" placeholder="Dataset Label" value="{!v.dataSetLabel}"/>
+                            </div>
+                        </aura:if>
+                            <div class="slds-size_1-of-3" style="">
+                                <lightning:button label="Add" onclick="{!c.create}"/>
+                            </div>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.dataSetAction=='new'}">
                         <div class="slds-size_1-of-1">
                             <lightning:input label="Dataset Name" name="dataSetName" placeholder="Dataset Name" value="{!v.dataSetName}"/>
                         </div>
                         <div class="slds-size_1-of-1">
-                            <lightning:input label="Dataset Labels (comma separated)" name="dataSetLabels" placeholder="Dataset Labels" value="{!v.dataSetLabels}"/>
+                            <lightning:input label="Dataset Label" name="dataSetLabel" placeholder="Dataset Label" value="{!v.dataSetLabel}"/>
                         </div>
                         <div class="slds-size_1-of-3" style="">
-                            <lightning:button label="Submit" onclick="{!c.create}"/>
+                            <lightning:button label="Create" onclick="{!c.create}"/>
                         </div>
+                        </aura:if>
                     </div>
                 </div>
             </lightning:card>
@@ -98,5 +132,6 @@
         </lightning:card>
     </aura:if>
     
+    <lightning:spinner alternativeText="Loading" size="medium" aura:id="spinner" class="slds-hide" />
     
 </aura:component>

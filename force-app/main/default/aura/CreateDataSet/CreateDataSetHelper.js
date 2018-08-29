@@ -31,7 +31,6 @@
         
         $A.enqueueAction(action);	
     },
-    
     init : function(component, event, helper) {
         component.set('v.cometdSubscriptions', []);
         
@@ -194,7 +193,7 @@
             if (handshakeReply.successful) {
                 console.log('Connected to CometD.');
                 // Subscribe to platform event
-                var newSubscription = cometd.subscribe('/event/Auth_Event__e',
+                var newSubscription = cometd.subscribe('/event/Dataset_Event__e',
                                                        function(platformEvent) {
                                                            console.log('Platform event received: '+ JSON.stringify(platformEvent));
                                                            helper.onReceiveNotification(component, event, helper, platformEvent);
@@ -231,13 +230,13 @@
             time : $A.localizationService.formatDateTime(
                 platformEvent.data.payload.CreatedDate, 'HH:mm'),
             action : platformEvent.data.payload.Action__c,
-            provider : platformEvent.data.payload.Provider__c
+            dataSetId : platformEvent.data.payload.Dataset_Id__c
         };
         // helper.refresh(component,event,helper);
-        if(newNotification.provider == 'Unsplash' && newNotification.action == 'Deploy_Success')
+        if(newNotification.dataSetId == component.get('v.dataSetId') && newNotification.action == 'Dataset_Accepted')
         {
-            helper.displayToast(component, 'success', 'Authentication Complete!');
-            helper.check_auth(component,event,helper);
+            var spinner = component.find("spinner");
+            $A.util.toggleClass(spinner, "slds-hide");
         }
     },
     displayToast : function(component, type, message) {
@@ -250,13 +249,17 @@
     },
     
     create : function(component,event,helper) {
+        var spinner = component.find("spinner");
+        $A.util.toggleClass(spinner, "slds-hide");
+        
         var items = component.get("v.items");
         var action = component.get("c.CreateDataset");
         action.setParams(
             { 
                 dataSetId: component.get('v.dataSetId'),
+                dataSetLabelId: component.get('v.dataSetLabelId'),
             	name : component.get("v.dataSetName"), 
-                labels: component.get("v.dataSetLabels"),
+                label: component.get("v.dataSetLabel"),
                 itemsString: JSON.stringify(items)
             });
         
@@ -287,4 +290,33 @@
         
         $A.enqueueAction(action);
     },
+    
+    getLabels : function(component, event, helper) {
+        var action = component.get("c.GetDatasetLabels");
+        action.setParams({ dataSetId : component.get('v.dataSetId') });
+        action.setCallback(this, function(response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                
+                var dataSetLabels = response.getReturnValue();
+                component.set('v.dataSetLabels', dataSetLabels);
+            }
+            else if (state === "INCOMPLETE") {
+                // do something
+            }
+                else if (state === "ERROR") {
+                    var errors = response.getError();
+                    if (errors) {
+                        if (errors[0] && errors[0].message) {
+                            console.log("Error message: " + 
+                                        errors[0].message);
+                        }
+                    } else {
+                        console.log("Unknown error");
+                    }
+                }
+        });
+        
+        $A.enqueueAction(action);
+    }
 })

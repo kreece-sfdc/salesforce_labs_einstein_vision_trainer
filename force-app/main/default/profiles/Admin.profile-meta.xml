@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>standard__LightningSales</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
     <classAccesses>
         <apexClass>AuthCallBack</apexClass>
         <enabled>true</enabled>
@@ -10,6 +15,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>Constants</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DatasetImageBatch</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -157,6 +166,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>Notifier_Controller</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>Pinterest_AuthController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -178,6 +191,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>Unsplash_GridController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>Upload_ImageController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -208,8 +225,18 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Dataset_Event__e.Message__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Dataset_Image__c.Dataset_Image_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Dataset_Image__c.Dataset_Label__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -245,6 +272,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Image_Classification_Result__c.Result__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Image_Classification__c.Classifier__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
