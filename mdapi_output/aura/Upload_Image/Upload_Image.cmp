@@ -1,0 +1,58 @@
+<aura:component controller="Upload_ImageController" implements="lightning:availableForFlowScreens,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    
+    <ltng:require scripts="{!$Resource.cometd}" afterScriptsLoaded="{!c.onCometdLoaded}" />
+    <!-- attributes to control cometD -->
+    <aura:attribute name="sessionId" type="String"/>
+    <aura:attribute name="cometd" type="Object"/>
+    <aura:attribute name="cometdSubscriptions" type="Object[]"/>
+    
+    <aura:attribute name="accept" type="List" default="['.jpg', '.jpeg']"/>
+    <aura:attribute name="multiple" type="Boolean" default="false"/>
+    <aura:attribute name="disabled" type="Boolean" default="false"/>
+    <aura:attribute name="myRecordId" type="String" default="none"/>
+    
+    <aura:attribute name="classificationId" type="Id" />
+    <aura:attribute name="columns" type="List" default="[{ label: 'Label', fieldName: 'Label__c', type: 'text'},{ label: 'Probability', fieldName: 'Result__c', type: 'percent'}]" />
+    
+    <aura:attribute name="models" type="Object[]" />
+    <aura:attribute name="model" type="String" />
+    
+    <aura:attribute name="results" type="Image_Classification_Result__c[]" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/> 
+    
+    <aura:if isTrue="{!v.results.length==0}">
+        <lightning:card title="Image Classification" class="slds-box slds-box_x-small">
+            <div class="slds-grid">
+                <div class="slds-col">
+                    <div class="slds-size_1-of-1">
+                        <lightning:select name="models" label="Select a Model" required="true" value="{!v.model}">
+                            <option value="GeneralImageClassifier">General Image Classifier</option>
+                            <aura:iteration items="{!v.models}" var="item">
+                                <option value="{!item.Model_Id__c}" text="{!item.Name}" />
+                            </aura:iteration>
+                        </lightning:select>
+                    </div>
+                    <div class="slds-size_1-of-1">
+                        <lightning:fileUpload  name="fileUploader"
+                                              multiple="{!v.multiple}"
+                                              accept="{!v.accept}"
+                                              disabled="{!v.disabled}"
+                                              recordId="{!v.myRecordId}"
+                                              onuploadfinished="{! c.handleUploadFinished }"/>
+                    </div>
+                </div>
+            </div>
+            
+        </lightning:card>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.results.length>0}">
+        
+        <lightning:datatable data="{!v.results}" columns="{!v.columns}" keyField="Id" hideCheckboxColumn="true" />
+        
+    </aura:if>
+    
+    <lightning:spinner alternativeText="Loading" size="medium" aura:id="spinner" class="slds-hide" />
+    
+</aura:component>

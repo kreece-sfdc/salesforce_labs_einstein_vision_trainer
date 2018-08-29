@@ -12,7 +12,7 @@
     <aura:attribute name="myRecordId" type="String" default="none"/>
     
     <aura:attribute name="classificationId" type="Id" />
-    <aura:attribute name="columns" type="List" default="[{ label: 'Label', fieldName: 'Label__c', type: 'text'},{ label: 'Probability', fieldName: 'Result__c', type: 'percent'}]" />
+    <aura:attribute name="columns" type="List" default="[{ label: 'Label', fieldName: 'flowcontest__Label__c', type: 'text'},{ label: 'Probability', fieldName: 'flowcontest__Result__c', type: 'percent'}]" />
     
     <aura:attribute name="models" type="Object[]" />
     <aura:attribute name="model" type="String" />

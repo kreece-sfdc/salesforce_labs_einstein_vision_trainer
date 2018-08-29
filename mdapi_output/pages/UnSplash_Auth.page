@@ -1,0 +1,10 @@
+<apex:page controller="UnSplash_AuthController" action="{!Redirect}">
+    <apex:outputText rendered="{!Code != null}">
+        <p>You can now close this window</p>
+    </apex:outputText>
+    <apex:outputPanel rendered="{!Close == true}">
+        <script>
+            window.close();
+        </script>
+    </apex:outputPanel>
+</apex:page>

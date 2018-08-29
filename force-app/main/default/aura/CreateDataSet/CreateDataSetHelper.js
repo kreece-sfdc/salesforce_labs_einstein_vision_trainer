@@ -193,7 +193,14 @@
             if (handshakeReply.successful) {
                 console.log('Connected to CometD.');
                 // Subscribe to platform event
-                var newSubscription = cometd.subscribe('/event/Dataset_Event__e',
+                var newSubscription = cometd.subscribe('/event/flowcontest__Dataset_Event__e',
+                                                       function(platformEvent) {
+                                                           console.log('Platform event received: '+ JSON.stringify(platformEvent));
+                                                           helper.onReceiveNotification(component, event, helper, platformEvent);
+                                                       }
+                                                      );
+                
+                var authSubscription = cometd.subscribe('/event/flowcontest__Auth_Event__e',
                                                        function(platformEvent) {
                                                            console.log('Platform event received: '+ JSON.stringify(platformEvent));
                                                            helper.onReceiveNotification(component, event, helper, platformEvent);
@@ -202,6 +209,7 @@
                 // Save subscription for later
                 var subscriptions = component.get('v.cometdSubscriptions');
                 subscriptions.push(newSubscription);
+                subscriptions.push(authSubscription);
                 component.set('v.cometdSubscriptions', subscriptions);
             }
             else
@@ -223,20 +231,24 @@
         console.log('CometD disconnected.');
     },
     onReceiveNotification : function(component, event, helper, platformEvent) {
-        
         var helper = this;
         // Extract notification from platform event
         var newNotification = {
             time : $A.localizationService.formatDateTime(
                 platformEvent.data.payload.CreatedDate, 'HH:mm'),
-            action : platformEvent.data.payload.Action__c,
-            dataSetId : platformEvent.data.payload.Dataset_Id__c
+            action : platformEvent.data.payload.flowcontest__Action__c,
+            dataSetId : platformEvent.data.payload.flowcontest__Dataset_Id__c,
+            provider: platformEvent.data.payload.flowcontest__Provider_Id__c,
         };
         // helper.refresh(component,event,helper);
         if(newNotification.dataSetId == component.get('v.dataSetId') && newNotification.action == 'Dataset_Accepted')
         {
             var spinner = component.find("spinner");
             $A.util.toggleClass(spinner, "slds-hide");
+        }
+        else if(newNotification.action == 'Deploy_Success')
+        {
+            helper.refresh(component, event, helper);
         }
     },
     displayToast : function(component, type, message) {

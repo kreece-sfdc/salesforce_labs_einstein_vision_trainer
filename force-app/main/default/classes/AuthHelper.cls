@@ -12,6 +12,20 @@ public with sharing class AuthHelper
 		return string.join(parts, '&');
     }
     
+    public static string GetLoginUrl()
+    {
+        string login_url = 'login';
+        
+        Organization org = [SELECT IsSandbox FROM Organization WHERE Id != NULL LIMIT 1];
+        
+        if(org != null && org.IsSandbox == true)
+        {
+            login_url = 'test';
+        }
+        
+        return login_url;
+    }
+    
     public static boolean HasAccessToken(string storage)
     {
         List<Auth_Storage__mdt> auths = [SELECT Access__c FROM Auth_Storage__mdt WHERE MasterLabel =: storage + '_' + UserInfo.getUserId()];

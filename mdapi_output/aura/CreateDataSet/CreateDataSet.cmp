@@ -1,0 +1,137 @@
+<aura:component controller="Unsplash_GridController" implements="lightning:availableForFlowScreens,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    
+    <ltng:require scripts="{!$Resource.cometd}" afterScriptsLoaded="{!c.onCometdLoaded}"/>
+
+    <!-- attributes to control cometD -->
+    <aura:attribute name="sessionId" type="String"/>
+    <aura:attribute name="cometd" type="Object"/>
+    <aura:attribute name="cometdSubscriptions" type="Object[]"/>
+    
+    <!-- attributes to control display -->
+    <aura:attribute name="showResults" type="boolean" default="false" />
+    <aura:attribute name="showCreateDataset" type="boolean" default="false" />
+    
+    <aura:attribute name="dataSets" type="Object[]" />
+    <aura:attribute name="dataSetLabels" type="Object[]" />
+    <aura:attribute name="dataSetAction" type="string" />
+
+    <aura:attribute name="items" type="Object[]" />
+    <aura:attribute name="query" type="string" />
+    <aura:attribute name="hasAuth" type="boolean" default="false" />
+    <aura:attribute name="authUrl" type="string" />
+    <aura:attribute name="page_number" type="integer" default="1" />
+
+    <aura:attribute name="dataSetId" type="Id" />
+    <aura:attribute name="dataSetLabelId" type="Id" />
+    
+    <aura:attribute name="dataSetName" type="string" />
+    <aura:attribute name="dataSetLabel" type="string" />
+    
+    <aura:attribute name="isComplete" type="boolean" default="false" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/> 
+    
+    <aura:if isTrue="{!v.hasAuth==true}">
+        
+        <aura:if isTrue="{!v.showCreateDataset==true}">
+            <lightning:card title="Create Dataset">
+                <div class="slds-grid">
+                    <div class="slds-col">
+                        
+                        <div class="slds-size_1-of-1">
+                            <lightning:select name="datasetAction" label="" required="false" value="{!v.dataSetAction}">
+                                <option value="">-- None --</option>
+                                <option value="new">Create New</option>
+                                <option value="existing">Add to Existing</option>
+                            </lightning:select>
+                        </div>
+                        
+                        
+                        
+                        <aura:if isTrue="{!v.dataSetAction=='existing'}">
+                        <div class="slds-size_1-of-1">
+                            <lightning:select name="dataSets" label="Select a Dataset" required="false" value="{!v.dataSetId}" onchange="{!c.getLabels}">
+                                <option value="">-- None --</option>
+                                <aura:iteration items="{!v.dataSets}" var="item">
+                                    <option value="{!item.Id}" text="{!item.Name}"></option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+                        <aura:if isTrue="{!v.dataSetLabels.length>0}">
+                            <div class="slds-size_1-of-1">
+                                <lightning:select name="dataSetLabels" label="Select a Dataset Label" required="false" value="{!v.dataSetLabelId}">
+                                    <option value="">-- None --</option>
+                                    <aura:iteration items="{!v.dataSetLabels}" var="item">
+                                        <option value="{!item.Id}" text="{!item.Name}"></option>
+                                    </aura:iteration>
+                                </lightning:select>
+                            </div>
+                            <div class="slds-size_1-of-1">
+                                <lightning:input label="Enter Dataset Label" name="dataSetLabel" placeholder="Dataset Label" value="{!v.dataSetLabel}"/>
+                            </div>
+                        </aura:if>
+                            <div class="slds-size_1-of-3" style="">
+                                <lightning:button label="Add" onclick="{!c.create}"/>
+                            </div>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.dataSetAction=='new'}">
+                        <div class="slds-size_1-of-1">
+                            <lightning:input label="Dataset Name" name="dataSetName" placeholder="Dataset Name" value="{!v.dataSetName}"/>
+                        </div>
+                        <div class="slds-size_1-of-1">
+                            <lightning:input label="Dataset Label" name="dataSetLabel" placeholder="Dataset Label" value="{!v.dataSetLabel}"/>
+                        </div>
+                        <div class="slds-size_1-of-3" style="">
+                            <lightning:button label="Create" onclick="{!c.create}"/>
+                        </div>
+                        </aura:if>
+                    </div>
+                </div>
+            </lightning:card>
+       </aura:if>
+        
+        <aura:if isTrue="{!v.showCreateDataset==false}">
+            <lightning:card title="Model Images">
+                <div class="slds-grid slds-gutters slds-grid_vertical-align-end">
+                        <div class="slds-col slds-size_1-of-2">
+                            <span onkeypress="{!c.keyCheck}">
+                                <lightning:input label="Search" name="query" placeholder="Search" value="{!v.query}"/>
+                            </span>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning:button label="Search" onclick="{!c.search}"/>
+                        </div>
+                    </div>
+               <aura:if isTrue="{!v.showResults==true}">
+                    <form aura:id="form" id="form" method="post">
+                    <fieldset class="slds-form-element">
+                        <div class="slds-form-element__control">
+                            <aura:iteration items="{!v.items}" var="item">
+                                <div class="slds-m-around_x-small">
+                                    <ui:inputCheckbox value="{!item.Selected}" name="options" aura:id="options" />
+                                    <img src="{!item.Url}" style="max-height: 120px"/>
+                                </div>
+                            </aura:iteration>
+                        </div>
+                    </fieldset>
+                    </form>
+                        
+                    <lightning:button label="Select" onclick="{!c.select}"/>
+                    <lightning:button label="Load More" onclick="{!c.loadmore}"/>
+                </aura:if> 
+            </lightning:card>
+        </aura:if>
+        
+    </aura:if>
+    
+    <aura:if isTrue="{!v.hasAuth==false}">
+        <lightning:card title="Search" class="slds-m-bottom_small">
+            <h2><a href="{!v.authUrl}" target="_blank">Please autenticate to Unsplash to Continue</a></h2>  
+            <a href="javascript:void(0)" onclick="{!c.refresh}">Refresh</a>               
+        </lightning:card>
+    </aura:if>
+    
+    <lightning:spinner alternativeText="Loading" size="medium" aura:id="spinner" class="slds-hide" />
+    
+</aura:component>

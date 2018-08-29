@@ -1,0 +1,32 @@
+<aura:component controller="Unsplash_GridController" implements="lightning:availableForFlowScreens,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome" access="global">
+    
+    <aura:attribute name="dataSets" type="Object[]" />
+    <aura:attribute name="dataSetId" type="Id"/>
+	<aura:attribute name="dataSetResult" type="Map" />    
+    
+    <aura:attribute name="isComplete" type="boolean" default="false" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/> 
+    <lightning:utilityBarAPI aura:id="utilitybar"/>
+    
+    <lightning:card title="Train Dataset">
+        <div class="slds-grid">
+            <div class="slds-col">
+                <div>
+                    <lightning:select name="dataSets" label="Select a Dataset" required="true" value="{!v.dataSetId}">
+                        <option value="">-- None --</option>
+                        <aura:iteration items="{!v.dataSets}" var="item">
+                            <option value="{!item.Id}" text="{!item.Name}" />
+                        </aura:iteration>
+                    </lightning:select>
+                </div>
+                <div class="slds-size_1-of-3" style="">
+                    <lightning:button label="Submit" onclick="{!c.train}"/>
+                </div>
+            </div>
+        </div>
+    </lightning:card>
+    
+    <lightning:spinner alternativeText="Loading" size="medium" aura:id="spinner" class="slds-hide" />
+    
+</aura:component>

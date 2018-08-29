@@ -1,0 +1,138 @@
+<aura:component controller="Unsplash_GridController" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    
+    <ltng:require scripts="{!$Resource.cometd}" afterScriptsLoaded="{!c.onCometdLoaded}"/>
+    
+    <!-- attributes to control display -->
+    <aura:attribute name="showResults" type="boolean" default="false" />
+    <aura:attribute name="showCreateDataset" type="boolean" default="false" />
+    <aura:attribute name="showTrain" type="boolean" default="false" />
+    <aura:attribute name="showSearch" type="boolean" default="false" />
+    
+    <aura:attribute name="dataSets" type="Object[]" />
+    
+    <aura:attribute name="sessionId" type="String"/>
+    <aura:attribute name="cometd" type="Object"/>
+    <aura:attribute name="cometdSubscriptions" type="Object[]"/>
+    <aura:attribute name="items" type="Object[]" />
+    <aura:attribute name="query" type="string" />
+    <aura:attribute name="hasAuth" type="boolean" default="false" />
+    <aura:attribute name="authUrl" type="string" />
+    <aura:attribute name="page_number" type="integer" default="1" />
+    <aura:attribute name="dataSetId" type="Id" />
+    
+    <aura:attribute name="dataSetName" type="string" />
+    <aura:attribute name="dataSetLabels" type="string" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/> 
+    <!-- <aura:registerEvent name="toastEvent" type="force:showToast"/> -->
+    
+    <aura:if isTrue="{!v.hasAuth==true}">
+        
+        <aura:if isTrue="{!v.showCreateDataset==true}">
+            <lightning:card title="Create Dataset">
+                <div class="slds-grid">
+                    <div class="slds-col">
+                        <div>
+                            <lightning:select name="dataSets" label="Select a Dataset" required="false" value="{!v.dataSetId}">
+                                <option value="">-- None --</option>
+                                <aura:iteration items="{!v.dataSets}" var="item">
+                                    <option value="{!item.Id}" text="{!item.Name}"></option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+                        <div>OR</div>
+                        <div class="slds-size_1-of-1">
+                            <lightning:input label="Dataset Name" name="dataSetName" placeholder="Dataset Name" value="{!v.dataSetName}"/>
+                        </div>
+                        <div class="slds-size_1-of-1">
+                            <lightning:input label="Dataset Labels (comma separated)" name="dataSetLabels" placeholder="Dataset Labels" value="{!v.dataSetLabels}"/>
+                        </div>
+                        <div class="slds-size_1-of-3" style="">
+                            <lightning:button label="Submit" onclick="{!c.create}"/>
+                        </div>
+                    </div>
+                </div>
+            </lightning:card>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.showTrain==true}">
+            <lightning:card title="Train Dataset">
+                <div class="slds-grid">
+                    <div class="slds-col">
+                        <div>
+                            <lightning:select name="dataSets" label="Select a Dataset" required="false" value="{!v.dataSetId}">
+                                <option value="">-- None --</option>
+                                <aura:iteration items="{!v.dataSets}" var="item">
+                                    <option value="{!item.Id}" text="{!item.Name}"></option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+                        <div class="slds-size_1-of-3" style="">
+                            <lightning:button label="Train" onclick="{!c.train}"/>
+                        </div>
+                    </div>
+                </div>
+            </lightning:card>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.showSearch==true}">
+            <lightning:card title="Model Images">
+                <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-2">
+                            <span onkeypress="{!c.keyCheck}">
+                                <lightning:input label="Search" name="query" placeholder="Search" value="{!v.query}"/>
+                            </span>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning:button label="Search" onclick="{!c.search}"/>
+                        </div>
+                </div>
+                <aura:if isTrue="{!v.showResults==true}">
+                    
+                    <fieldset class="slds-form-element">
+                        <div class="slds-form-element__control">
+                            <aura:iteration items="{!v.items}" var="item">
+                                <div class="slds-visual-picker slds-visual-picker_medium">
+                                    <input type="checkbox" id="{!item.ImgId}" value="{!item.Selected}" name="options" />
+                                    <label for="{!item.ImgId}">
+                                        <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center"> 
+                                            <span class="slds-is-selected">
+                                                <span class="slds-icon_container">
+                                                    <img src="{!$Resource.Selected}" />
+                                                </span>
+                                            </span>
+                                            <span class="slds-is-not-selected">
+                                                <span class="slds-icon_container" style="max-height: 120px">
+                                                    <img src="{!item.Url}" style="max-height: 120px"/>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </aura:iteration>
+                        </div>
+                    </fieldset>
+                        
+                    <lightning:button label="Select" onclick="{!c.select}"/>
+                    <lightning:button label="Load More" onclick="{!c.loadmore}"/>
+                        
+                </aura:if>
+                
+            </lightning:card>
+        </aura:if>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.showSearch==true}">
+        <lightning:card title="Options">
+        </lightning:card>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.hasAuth==false}">
+        <lightning:card title="Search" class="slds-m-bottom_small">
+            <h2><a href="{!v.authUrl}" target="_blank">Please autenticate to Unsplash to Continue</a></h2>  
+            <a href="javascript:void(0)" onclick="{!c.refresh}">Refresh</a>               
+        </lightning:card>
+    </aura:if>
+    
+    
+</aura:component>
